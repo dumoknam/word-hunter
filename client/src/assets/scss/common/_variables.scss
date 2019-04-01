@@ -1,0 +1,24 @@
+$color1: #e7eaf6;
+$color2: #a2a8d3;
+$color3: #38598b;
+$color4: #113f67;
+$color5: #022c43;
+$color6: #d1d5da;
+
+$masterColor: $color5;
+$secondColor: $color2;
+$backgroundColor: $secondColor;
+$fontColor: $masterColor;
+$borderColor: $color6;
+
+@import url('https://fonts.googleapis.com/css?family=Gothic+A1:100,300,400,600,700,800,900');
+
+$fontFamily: 'Gothic A1', sans-serif;
+
+$fontThin: 100;
+$fontLight: 300;
+$fontRegular: 400;
+$fontSemiBold: 600;
+$fontBold: 700;
+$fontExtraBold: 800;
+$fontBlack: 900;

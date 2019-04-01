@@ -1,0 +1,54 @@
+<template>
+  <div class="login">
+    <header class="login__logo">
+      <login-logo></login-logo>
+    </header>
+    <div class="login__box">
+      <login-form></login-form>
+    </div>
+  </div>
+</template>
+
+<script>
+import LoginLogo from '../../shared-components/Logo';
+import LoginForm from './LoginForm';
+
+export default {
+  name: 'Login',
+  components: {
+    'login-logo': LoginLogo,
+    'login-form': LoginForm,
+  },
+  computed: {
+    childCounter() {
+      return this.$store.getters.getCounter;
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import '../../assets/scss/common/base';
+
+.login {
+  font-size: 1rem;
+  padding: 3%;
+
+  .login__logo {
+    font-size: 5em;
+    text-align: center;
+    margin: 1em 0 0.5em;
+  }
+
+  .login__box {
+    font-size: 1em;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    background-color: $color1;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid $borderColor;
+  }
+}
+</style>
