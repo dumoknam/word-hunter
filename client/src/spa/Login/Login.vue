@@ -41,14 +41,9 @@ export default {
   }
 
   .login__box {
-    font-size: 1em;
     width: 100%;
-    max-width: 340px;
+    max-width: $formMaxWidth;
     margin: 0 auto;
-    background-color: $color1;
-    padding: 20px;
-    border-radius: 5px;
-    border: 1px solid $borderColor;
   }
 }
 </style>

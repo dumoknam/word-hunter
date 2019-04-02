@@ -1,0 +1,45 @@
+/* 버튼 공통 스타일 */
+@mixin btnCommon {
+  display: inline-block;
+  font: {
+    size: 1rem;
+    weight: $fontSemiBold;
+    family: inherit;
+  };
+  border: {
+    width: 1px;
+    style: solid;
+    color: $borderColor;
+    radius: 5px;
+  };
+  padding: 0.5rem;
+  color: $color1;
+  outline: none;
+  cursor: pointer;
+  background-color: $masterColor;
+  
+  &:hover {
+    background-color: $secondColor;
+  }
+}
+
+/* 기본 버튼 */
+.btn {
+  @include btnCommon;
+}
+
+/* router link 기본 버튼 */
+.btn__routerLink {
+  @include btnCommon;
+  text: {
+    align: center;
+    decoration: none;
+  };
+}
+
+/* anchor 기본 */
+.btn__anchor {
+  color: #07c;
+  text-decoration: none;
+}
+

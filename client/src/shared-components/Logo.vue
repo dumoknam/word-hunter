@@ -34,6 +34,7 @@ export default {
   animation-name: up-down;
   animation-duration: 2s;
   animation-iteration-count: infinite;
+  font-size: 5rem;
 
   .logo__word {
     text-align: left;

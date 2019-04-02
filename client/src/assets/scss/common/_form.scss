@@ -1,0 +1,11 @@
+.form {
+  font-size: 1rem;
+  background-color: $color1;
+  padding: 20px;
+  border: {
+    width: 1px;
+    style: solid;
+    color: $borderColor;
+    radius: 5px;
+  };
+}

@@ -6,8 +6,8 @@ $color5: #022c43;
 $color6: #d1d5da;
 
 $masterColor: $color5;
-$secondColor: $color2;
-$backgroundColor: $secondColor;
+$secondColor: $color4;
+$backgroundColor: $color2;
 $fontColor: $masterColor;
 $borderColor: $color6;
 
@@ -22,3 +22,5 @@ $fontSemiBold: 600;
 $fontBold: 700;
 $fontExtraBold: 800;
 $fontBlack: 900;
+
+$formMaxWidth: 340px;
