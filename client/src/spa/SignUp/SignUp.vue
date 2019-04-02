@@ -14,6 +14,7 @@ import SignUpLogo from '../../shared-components/Logo';
 import SignUpForm from './SignUpForm';
 
 export default {
+  name: 'SignUp',
   components: {
     'signup-logo': SignUpLogo,
     'signup-form': SignUpForm,
@@ -29,7 +30,7 @@ export default {
   padding: 3%;
 
   .signUp__logo {
-    font-size: 5em;
+    font-size: 4em;
     text-align: center;
     margin: 1em 0 0.5em;
   }

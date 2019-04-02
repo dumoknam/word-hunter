@@ -1,15 +1,11 @@
-$color1: #e7eaf6;
-$color2: #a2a8d3;
 $color3: #38598b;
-$color4: #113f67;
-$color5: #022c43;
-$color6: #d1d5da;
 
-$masterColor: $color5;
-$secondColor: $color4;
-$backgroundColor: $color2;
-$fontColor: $masterColor;
-$borderColor: $color6;
+$masterColor: #022c43; // 심볼색
+$subColor: #113f67; // masterColor의 hover color
+$masterContrastColor: #eceef0; // masterColor의 대비색
+$backgroundColor: #a2bbc9; // body 배경색
+$fontColor: $masterColor; // 기본 글자색
+$borderColor: #d1d5da; // 기본 보더 색
 
 @import url('https://fonts.googleapis.com/css?family=Gothic+A1:100,300,400,600,700,800,900');
 

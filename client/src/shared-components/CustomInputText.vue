@@ -72,6 +72,11 @@ export default {
     box-sizing: border-box;
     padding: 5px;
     margin-top: 0.5em;
+    outline: none;
+
+    &:focus {
+      border: 1px solid #07c;
+    }
   }
 }
 </style>

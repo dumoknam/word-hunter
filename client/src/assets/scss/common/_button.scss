@@ -13,13 +13,13 @@
     radius: 5px;
   };
   padding: 0.5rem;
-  color: $color1;
+  color: $masterContrastColor;
   outline: none;
   cursor: pointer;
   background-color: $masterColor;
   
   &:hover {
-    background-color: $secondColor;
+    background-color: $subColor;
   }
 }
 

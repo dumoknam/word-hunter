@@ -35,7 +35,7 @@ export default {
   padding: 3%;
 
   .login__logo {
-    font-size: 5em;
+    font-size: 4em;
     text-align: center;
     margin: 1em 0 0.5em;
   }
