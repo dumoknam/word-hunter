@@ -12,6 +12,13 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'Menu',
+};
+</script>
+
+
 <style lang="scss" scoped>
 @import '../../assets/scss/common/variables';
 
@@ -25,7 +32,7 @@
     text-align: center;
     background-color: $masterColor;
     color: $masterContrastColor;
-    border: 2px solid $masterContrastColor;
+    border: 2px solid $backgroundColor;
     cursor: pointer;
 
     &--training {
@@ -39,10 +46,15 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      transition: all ease 1s;
     }
 
     &:hover {
       background-color: $subColor;
+
+      i {
+        transform: scale(1.5) translate(-25%, -25%);
+      }
     }
   }
 }

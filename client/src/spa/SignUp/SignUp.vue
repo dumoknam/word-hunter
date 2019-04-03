@@ -30,9 +30,9 @@ export default {
   padding: 3%;
 
   .signUp__logo {
-    font-size: 4em;
+    font-size: 340%;
     text-align: center;
-    margin: 1em 0 0.5em;
+    margin: 0.5em 0 0.3em;
   }
 
   .signUp__box {

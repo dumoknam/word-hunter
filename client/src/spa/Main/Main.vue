@@ -22,6 +22,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/common/base';
+
 .main {
   height: 100vh;
   display: grid;
@@ -32,7 +34,7 @@ export default {
   }
 }
 
-@media (orientation: landscape) {
+@media (min-width: $mobileMinWidth) {
   .main {
     grid-template: 3.5em 1fr/ 30% 70%;
 
