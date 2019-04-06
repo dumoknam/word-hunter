@@ -33,6 +33,7 @@ export default {
     background-color: $masterColor;
     color: $masterContrastColor;
     border: 2px solid $backgroundColor;
+    border-radius: 5px;
     cursor: pointer;
 
     &--training {

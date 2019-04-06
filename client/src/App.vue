@@ -5,25 +5,8 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex';
-
 export default {
   name: 'App',
-  computed: {
-    ...mapGetters([
-      'getCounter',
-    ]),
-  },
-  methods: {
-    ...mapMutations([
-      'addCounter',
-      'subCounter',
-      'setNum',
-    ]),
-    ...mapActions([
-      'upCounter',
-    ]),
-  },
 };
 </script>
 
