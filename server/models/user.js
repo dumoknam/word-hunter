@@ -15,7 +15,18 @@ const userSchema = new Schema({
     trim: true,
     default: ''
   },
+  salt: {
+    type: String,
+    require: true,
+    trim: true,
+    default: ''
+  },
   nickname: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  email: {
     type: String,
     trim: true,
     default: ''
@@ -29,16 +40,27 @@ const userSchema = new Schema({
   },
   signup_date: {
     type: Date,
-    require: false
+    require: true,
+    default: Date.now,
   }
 });
 
 userSchema.statics = {
-  create: function(user) {
+  create: function(name, password, salt, nickname, email) {
+    const user = new this({
+      name,
+      password,
+      salt,
+      nickname,
+      email
+    });
     return user.save();
   },
-  read: function(query) {
-    return this.find(query);
+  findOneForLogin: function(name, password) {
+    return this.findOne({ name, password });
+  },
+  findOneByName: function(name) {
+    return this.findOne({ name });
   }
 }
 

@@ -2,8 +2,10 @@ const express       = require('express');
 const path          = require('path');
 const logger        = require('morgan');
 const createError   = require('http-errors');
+// const session       = require('express-session');
 const cookieParser  = require('cookie-parser');
 const history       = require('connect-history-api-fallback');
+const config        = require('./config/config');
 const database      = require('./db');
 const apiRouter     = require('./routes/api');
 
@@ -18,13 +20,18 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.set('jwt-secret', config.jwtconf.secret);
+// app.use(session({
+//   secret: 'wordhunter@@',
+//   resave: true,
+//   saveUninitialized: true
+// }));
 
 // Database connect
 database();
 
 // GET home page
 app.use('/', express.static(path.join(__dirname, 'public')));
-
 
 // 예를 들어 /api/animal 경로로 접속하면 :path?로 animal을 가로채서 아래 콜백 로직 진행하고
 // next() 하면 리퀘스트가 넘어간다 app.use('/api'. apiRouter)로

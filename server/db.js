@@ -1,15 +1,11 @@
 'use strict';
-
+const config = require('./config/config');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 module.exports = () => {
   function connect() {
-    mongoose.connect('mongodb://js428118:thinghowa0428@localhost:27017/admin', {
-      dbName: "wordhunter", 
-      useNewUrlParser: true,
-      useCreateIndex: true
-    }, (err) => {
+    mongoose.connect(config.db.mongodbUri, config.db.dbInfo, (err) => {
       if (err) {
         console.error('mongodb connection error', err);
       }
