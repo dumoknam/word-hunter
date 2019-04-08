@@ -3,9 +3,7 @@
     <header class="login__logo">
       <login-logo></login-logo>
     </header>
-    <div class="login__box">
-      <login-form></login-form>
-    </div>
+    <login-form class="login__box"></login-form>
   </div>
 </template>
 
@@ -18,11 +16,6 @@ export default {
   components: {
     'login-logo': LoginLogo,
     'login-form': LoginForm,
-  },
-  computed: {
-    childCounter() {
-      return this.$store.getters.getCounter;
-    },
   },
 };
 </script>
@@ -44,6 +37,7 @@ export default {
     width: 100%;
     max-width: $formMaxWidth;
     margin: 0 auto;
+    box-shadow: 1px 1px 4px 1px #5D5D5D;
   }
 }
 </style>

@@ -1,15 +1,16 @@
 <template>
-  <form class="form signUp__form" action="#">
-    <custom-input-text seq="SignUpForm0" label="User name" v-model="uid"></custom-input-text>
+  <form class="form signUp__form" @submit.prevent="onSubmit">
+    <custom-input-text seq="SignUpForm0" label="User name" maxlength="15" v-model="name" :guide="nameGuide" ref="username"></custom-input-text>
     <custom-input-text seq="SignUpForm1" isPassword="true"
-    label="Password" v-model="password"></custom-input-text>
-    <custom-input-text seq="SignUpForm2" label="Nickname" v-model="nickname"></custom-input-text>
-    <custom-input-text seq="SignUpForm3" label="Email" v-model="email"></custom-input-text>
+    label="Password" maxlength="20" v-model="password" :guide="passwordGuide" ref="password"></custom-input-text>
+    <custom-input-text seq="SignUpForm2" label="Nickname" maxlength="10" v-model="nickname" :guide="nicknameGuide" ref="nickname"></custom-input-text>
+    <custom-input-text seq="SignUpForm3" label="Email" v-model="email" :guide="emailGuide" ref="email"></custom-input-text>
     <button type="submit" class="btn signUp__button signUp__button--signIn">Sign up</button>
   </form>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import customInputText from '../../shared-components/CustomInputText';
 
 export default {
@@ -19,11 +20,139 @@ export default {
   },
   data() {
     return {
-      uid: '',
+      name: '',
       password: '',
       nickname: '',
       email: '',
+      nameGuide: '',
+      nameOK: false,
+      passwordGuide: '',
+      passwordOK: false,
+      nicknameGuide: 'If you don\'t enter nickname, I\'ll do what I want',
+      nicknameOK: true,
+      emailGuide: '',
+      emailOK: true,
     };
+  },
+  watch: {
+    name(data) {
+      const reg = /^[a-zA-Z0-9]{4,15}/;
+      if (!reg.test(data)) {
+        this.nameGuide = 'Username may only at least 3 and contain alphanumeric characters';
+      } else {
+        this.isDuplicatedId();
+      }
+    },
+    password(data) {
+      const reg = /(?=.*\d)(?=.*[a-zA-Z]).{8,15}/;
+
+      if (!reg.test(data)) {
+        this.passwordGuide = 'Make sure it\'s at least 8 charactors and including a alphabet and number';
+        this.passwordOK = false;
+      } else {
+        this.passwordGuide = '';
+        this.passwordOK = true;
+      }
+    },
+    nickname(data) {
+      // eslint-disable-next-line
+      const reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+
+      if (reg.test(data)) {
+        this.nicknameGuide = 'No special characters!';
+        this.nicknameOK = false;
+      } else {
+        if (this.nickname) {
+          this.nicknameGuide = '';
+        } else {
+          this.nicknameGuide = 'If you don\'t enter nickname, I\'ll do what I want';
+        }
+        this.nicknameOK = true;
+      }
+    },
+    email(data) {
+      const reg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+      if (data && !reg.test(data)) {
+        this.emailGuide = 'Please enter a valid email address';
+        this.emailOK = false;
+      } else {
+        this.emailGuide = '';
+        this.emailOK = true;
+      }
+    },
+  },
+  computed: {
+    ...mapGetters({
+      apiResponseMessage: 'getApiResponseMessage',
+    }),
+    signupData() {
+      return {
+        signupData: {
+          name: this.name,
+          password: this.password,
+          nickname: this.nickname,
+          email: this.email,
+        },
+      };
+    },
+  },
+  methods: {
+    ...mapActions(['signup', 'idcheck']),
+    async isDuplicatedId() {
+      try {
+        const isDuplicated = await this.idcheck(this.name);
+        if (isDuplicated) {
+          // name 중복 O
+          this.nameGuide = 'Duplicated';
+          this.nameOK = false;
+        } else {
+          // name 중복 x
+          this.nameGuide = '';
+          this.nameOK = true;
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+    async onSubmit() {
+      // 각 폼의 유효성 체크
+      if (!this.nameOK) {
+        this.$refs.username.$refs.input.focus();
+        return;
+      } else if (!this.passwordOK) {
+        this.$refs.password.$refs.input.focus();
+        return;
+      } else if (!this.nicknameOK) {
+        this.$refs.nickname.$refs.input.focus();
+        return;
+      } else if (!this.emailOK) {
+        this.$refs.email.$refs.input.focus();
+        return;
+      }
+
+      try {
+        const signupData = {
+          name: this.name,
+          password: this.password,
+          nickname: this.nickname,
+          email: this.email,
+        };
+        const isSuccess = await this.signup(signupData);
+        alert(this.apiResponseMessage);
+        if (isSuccess) {
+          // 성공
+          this.goToLogin();
+        } else {
+          // 실패
+        }
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    goToLogin() {
+      this.$router.push('/');
+    },
   },
 };
 </script>

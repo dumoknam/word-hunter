@@ -1,8 +1,9 @@
 <template>
   <div class="customInput">
     <label v-if="label" class="customInput__label" :for="'customInput' + seq">{{ label }}</label>
-    <input :type="type" class="customInput__input" :id="'customInput' + seq" :max="max"
-    :placeholder="placeholder" @input="updateValue($event.target.value)">
+    <input :type="type" class="customInput__input" :id="'customInput' + seq" :maxlength="maxlength"
+    :placeholder="placeholder" @input="updateValue($event.target.value)" ref="input">
+    <p class="customInput__guide">{{guide}}</p>
   </div>
 </template>
 
@@ -18,9 +19,9 @@ export default {
       type: String,
       default: '',
     },
-    max: {
+    maxlength: {
       type: String,
-      default: '10',
+      default: '50',
     },
     placeholder: {
       type: String,
@@ -33,6 +34,10 @@ export default {
     isPassword: {
       type: String,
       default: 'false',
+    },
+    guide: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -71,12 +76,17 @@ export default {
     line-height: 2em;
     box-sizing: border-box;
     padding: 5px;
-    margin-top: 0.5em;
+    margin: 0.5em 0;
     outline: none;
 
     &:focus {
       border: 1px solid #07c;
     }
+  }
+
+  .customInput__guide {
+    font-size: 0.7em;
+    line-height: 1.2em;
   }
 }
 </style>

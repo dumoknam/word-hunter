@@ -47,18 +47,15 @@ module.exports = {
   build: {
     // Template for index.html
     index: path.resolve(__dirname, '../../server/public/index.html'),
-    // index: path.resolve(__dirname, '../docs/index.html'),
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../../server/public'),
-    // assetsRoot: path.resolve(__dirname, '../docs'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
 
     /**
      * Source Maps
      */
-
     productionSourceMap: true,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',

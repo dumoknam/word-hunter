@@ -11,13 +11,11 @@ exports.registeredUser = (req, res, next) => {
   const { name, password, nickname, email } = req.body.params;
 
   if (!name || name === "") {
-    res.status(500).json(util.fail('You have to receive user name'));
-    return;
+    throw util.LogicalError('You have to receive user name');
   }
 
   if (!password || password === "") {
-    res.status(500).json(util.fail('You have to receive user password'));
-    return;
+    throw util.LogicalError('You have to receive user password');
   }
 
   const userCreate = ({encryptPassword, salt}) => {
@@ -29,9 +27,12 @@ exports.registeredUser = (req, res, next) => {
   };
 
   const onError = (error) => {
-    res.status(500).json(util.fail(error.message));
-    return;
-  }
+    if (error.name === util.errorName) {
+      res.status(200).json(JSON.parse(error.message));
+    } else {
+      res.status(500).json(error);
+    }
+  };
 
   encryptCommon.saltEncrypt(password)
   .then(userCreate)
@@ -55,7 +56,11 @@ exports.checkDuplicateId = (req, res, next) => {
   };
 
   const onError = (error) => {
-    res.status(500).json(util.fail(error.message));
+    if (error.name === util.errorName) {
+      res.status(200).json(JSON.parse(error.message));
+    } else {
+      res.status(500).json(error);
+    }
   };
 
   User.findOneByName(name)
@@ -72,18 +77,18 @@ exports.login = (req, res, next) => {
   
   // 데이터 있으면 salt값으로 new password 암호화하고
   const passwordEncrypt = (user) => {
-    console.log(user);
-    if (!user) {
-      res.status(500).json(util.fail('Not found user'));
+    if (user) {
+      originalUserData = user;
+      return encryptCommon.saltEncrypt(password, user.salt);
     }
-    originalUserData = user;
-    return encryptCommon.saltEncrypt(password, user.salt);
+    throw util.LogicalError('Not found user');
   }
 
   // 기존 암호랑 비교
   const verification = ({ encryptPassword }) => {
+    console.log("here 2");
     if (originalUserData.password !== encryptPassword) {
-      res.status(500).json(util.fail('Password is wrong'));
+      throw util.LogicalError('Password is wrong');
     }
 
     // 토큰화
@@ -101,7 +106,11 @@ exports.login = (req, res, next) => {
   };
 
   const onError = (error) => {
-    res.status(500).json(util.fail(error.message));
+    if (error.name === util.errorName) {
+      res.status(200).json(JSON.parse(error.message));
+    } else {
+      res.status(500).json(error);
+    }
   };
 
   // name으로 salt값 조회

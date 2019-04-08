@@ -1,13 +1,15 @@
 import * as types from './mutation_type';
 
 export default {
-  [types.NAME](state, name) {
-    state.name = name;
-  },
-  [types.ERROR_STATE](state, errorState) {
-    state.errorState = errorState;
+  [types.ACCESS_TOKEN](state, token) {
+    state.auth.accessToken = token;
+    localStorage.accessToken = token;
   },
   [types.IS_AUTH](state, isAuth) {
-    state.isAuth = isAuth;
+    state.auth.isAuth = isAuth;
+    localStorage.isAuth = isAuth;
+  },
+  [types.API_RESPONSE_MESSAGE](state, message) {
+    state.api.responseMessage = message;
   },
 };

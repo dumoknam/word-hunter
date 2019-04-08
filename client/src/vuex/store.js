@@ -7,9 +7,13 @@ import mutations from './mutations';
 Vue.use(Vuex);
 
 const state = {
-  name: '',
-  errorState: '',
-  isAuth: false,
+  auth: {
+    accessToken: null,
+    isAuth: false,
+  },
+  api: {
+    responseMessage: '',
+  },
 };
 
 export default new Vuex.Store({

@@ -1,28 +1,27 @@
-import axios from 'axios';
+import jwtAxios from './jwtAxios';
 
 /**
  * 사용자 정보 조회
  * @param {*} name 사용자 아이디
  * @param {*} password 사용자 비밀번호
  */
-const getUserInfo = (name, password) => {
-  return axios.post('/api/login', {
+const getUserInfo = (loginData) => {
+  return jwtAxios().post('/api/login', {
     params: {
-      name,
-      password,
+      name: loginData.name,
+      password: loginData.password,
     },
   });
 };
 
 export default {
-  async login(name, password) {
+  async login(loginData) {
     try {
-      const getUserInfoPromise = await getUserInfo(name, password);
-      const [userInfoResponse] = await Promise.all([getUserInfoPromise]);
-      if (userInfoResponse.length === 0) return 'noAuth'; // 로그인 실패
-      return userInfoResponse;
-    } catch (err) {
-      throw new Error(err);
+      const p = await getUserInfo(loginData);
+      const [response] = await Promise.all([p]);
+      return response.data;
+    } catch (error) {
+      throw new Error(error);
     }
   },
 };

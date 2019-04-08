@@ -1,5 +1,5 @@
 'use strict';
-
+const jwt = require('jsonwebtoken');
 const util = require('../util');
 
 exports.isLogin = (req, res, next) => {
@@ -17,12 +17,13 @@ exports.isLogin = (req, res, next) => {
   });
 
   const onResponse = (decoded) => {
-    req.decoded = decoded;
+    req.jwtobj = decoded;
     next();
   };
 
   const onError = (error) => {
-    res.status(403).json(util.fail(error.message));
+    console.error(error.message);
+    res.status(403).json(error);
   };
 
   p.then(onResponse).catch(onError);

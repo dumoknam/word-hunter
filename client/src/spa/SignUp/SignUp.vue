@@ -3,9 +3,7 @@
     <header class="signUp__logo">
       <signup-logo></signup-logo>
     </header>
-    <div class="signUp__box">
-      <signup-form></signup-form>
-    </div>
+    <signup-form class="signUp__box"></signup-form>
   </div>
 </template>
 
@@ -39,6 +37,7 @@ export default {
     width: 100%;
     max-width: $formMaxWidth;
     margin: 0 auto;
+    box-shadow: 1px 1px 4px 1px #5D5D5D;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 export default {
-  getUid: (state) => { return state.name; },
-  getErrorState: (state) => { return state.errorState; },
-  getIsAuth: (state) => { return state.isAuth; },
+  getAccessToken: (state) => { return state.auth.accessToken; },
+  getIsAuth: (state) => { return state.auth.isAuth; },
+  getApiResponseMessage: (state) => { return state.api.responseMessage; },
 };

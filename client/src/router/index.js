@@ -3,12 +3,16 @@ import Router from 'vue-router';
 import Login from '@/spa/Login/Login';
 import SignUp from '@/spa/SignUp/SignUp';
 import Main from '@/spa/Main/Main';
-import store from '@/vuex/store';
 
 Vue.use(Router);
 
+const redirectMain = (from, to, next) => {
+  if (localStorage.accessToken) return next('/main'); // isAuth === true면 메인
+  return next();
+};
+
 const requireAuth = (from, to, next) => {
-  if (store.getters.getIsAuth) return next(); // isAuth === true면 메인
+  if (localStorage.accessToken) return next(); // isAuth === true면 메인
   return next('/'); // isAuth === false면 다시 로그인화면으로
 };
 
@@ -19,6 +23,7 @@ export default new Router({
       path: '/',
       name: 'Login',
       component: Login,
+      beforeEnter: redirectMain,
     },
     {
       path: '/signup',

@@ -3,6 +3,7 @@ const crypto = require('crypto');
 
 const encryptCommon = {
   jwtSign(secret, payload) {
+    console.log("secret : ", secret);
     return new Promise((resolve, reject) => {
       jwt.sign(payload, secret, {
         expiresIn: '365d',
@@ -18,7 +19,7 @@ const encryptCommon = {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(64, (error, buffer) => {
         if (error) reject(error);
-        const secretkey = salt.toString('base64') || buffer.toString('base64');
+        const secretkey = salt || buffer.toString('base64');
         crypto.pbkdf2(password, secretkey, 180927, 64, 'sha512', (error, key) => {
           if (error) reject(error);
           resolve({ 

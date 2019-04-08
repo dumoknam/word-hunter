@@ -1,6 +1,6 @@
 <template>
   <div class="menu">
-    <div class="menu__item menu__item--training">
+    <div class="menu__item menu__item--training" @click="test1">
         <i class="fas fa-running"></i>
     </div>
     <div class="menu__item menu__item--wholeWord">
@@ -13,11 +13,24 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'Menu',
+  methods: {
+    ...mapActions(['test', 'test2']),
+    async test1() {
+      try {
+        console.log('start');
+        const result = await this.test();
+        console.log(result);
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+  },
 };
 </script>
-
 
 <style lang="scss" scoped>
 @import '../../assets/scss/common/variables';

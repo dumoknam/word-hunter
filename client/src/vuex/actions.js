@@ -1,39 +1,71 @@
-import { NAME, IS_AUTH, ERROR_STATE } from './mutation_type';
-import api from '../service';
+import { ACCESS_TOKEN, IS_AUTH, API_RESPONSE_MESSAGE } from './mutation_type';
+import loginAPI from '../service/loginAPI';
+import signupAPI from '../service/signupAPI';
+import wordAPI from '../service/wordAPI';
 
-const setNAME = ({ commit }, data) => {
-  commit(NAME, data);
+const setAccessToken = ({ commit }, token) => {
+  commit(ACCESS_TOKEN, token);
 };
 
-const setErrorState = ({ commit }, data) => {
-  commit(ERROR_STATE, data);
+const setIsAuth = ({ commit }, isAuth) => {
+  commit(IS_AUTH, isAuth);
 };
 
-const setIsAuth = ({ commit }, data) => {
-  commit(IS_AUTH, data);
-};
-
-// 백엔드에서 반환한 결과값을 가지고 로그인 성공 실패 여부를 vuex에 넣어준다.
-const processResponse = (store, loginResponse) => {
-  switch (loginResponse) {
-    case 'noAuth':
-      setErrorState(store, 'Wrong name or Password');
-      setIsAuth(store, false);
-      break;
-    default:
-      setNAME(store, loginResponse.NAME);
-      setErrorState(store, '');
-      setIsAuth(store, true);
-  }
+const setApiResponseMessage = ({ commit }, message) => {
+  commit(API_RESPONSE_MESSAGE, message);
 };
 
 export default {
+  // 로그인
   async login(store, loginData) {
-    /* 로그인은 백엔드에 다녀와야 해서 비동기로 처리한다 */
-    const loginResponse = await api.login(loginData.name, loginData.password);
-    processResponse(store, loginResponse);
-    return store.getters.getIsAuth; // 로그인 결과를 리턴한다.
+    try {
+      const response = await loginAPI.login(loginData);
+      let isSuccess = false;
+      setApiResponseMessage(store, response.message);
+      if (response.success) {
+        setAccessToken(store, response.data.token);
+        setIsAuth(store, true);
+        isSuccess = true;
+      } else {
+        setIsAuth(store, false);
+      }
+      return isSuccess;
+    } catch (error) {
+      throw new Error(error);
+    }
   },
-  // async signup() {
-  // },
+  // 로그아웃
+  logout() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('isAuth');
+    return true;
+  },
+  // 회원가입
+  async signup(store, signupData) {
+    try {
+      const response = await signupAPI.signup(signupData);
+      setApiResponseMessage(store, response.message);
+      return response.success;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  // 아이디 중복체크
+  async idcheck(store, name) {
+    try {
+      const response = await signupAPI.idcheck(name);
+      return response.data.isDuplicated;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  // api test
+  async test(store) {
+    try {
+      const response = await wordAPI.test(store);
+      return response;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };
