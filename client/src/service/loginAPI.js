@@ -7,10 +7,7 @@ import jwtAxios from './jwtAxios';
  */
 const getUserInfo = (loginData) => {
   return jwtAxios().post('/api/login', {
-    params: {
-      name: loginData.name,
-      password: loginData.password,
-    },
+    params: loginData,
   });
 };
 

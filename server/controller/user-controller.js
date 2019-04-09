@@ -1,6 +1,6 @@
 'use strict';
 
-const User = require("../models/user");
+const User = require('../models/user');
 const encryptCommon = require('../encryptCommon');
 const util = require('../util');
 
@@ -86,7 +86,6 @@ exports.login = (req, res, next) => {
 
   // 기존 암호랑 비교
   const verification = ({ encryptPassword }) => {
-    console.log("here 2");
     if (originalUserData.password !== encryptPassword) {
       throw util.LogicalError('Password is wrong');
     }

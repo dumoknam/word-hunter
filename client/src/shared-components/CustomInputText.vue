@@ -62,6 +62,7 @@ export default {
 
 .customInput {
   margin-bottom: 1em;
+  text-align: left;
 
   .customInput__label {
     font-size: 0.9em;

@@ -27,20 +27,15 @@ export default {
 .main {
   height: 100vh;
   display: grid;
-  grid-template: 3.5em 40% 1fr / 100%;
-
-  .main__header {
-    text-align: center;
-  }
+  grid-template: 3.6em 40% 1fr / 100%;
 }
 
-@media (min-width: $mobileMinWidth) {
+@media (min-width: $pcMinWidth) {
   .main {
-    grid-template: 3.5em 1fr/ 30% 70%;
+    grid-template: 3.6em 1fr/ 30% 70%;
 
     .main__header {
       grid-column: 1 / 3;
-      text-align: left;
     }
 
     .main__profile {

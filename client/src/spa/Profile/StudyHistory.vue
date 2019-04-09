@@ -74,7 +74,7 @@ export default {
   }
 }
 
-@media (min-width: $mobileMinWidth) {
+@media (min-width: $pcMinWidth) {
   .studyHistory {
     display: block;
     position: relative;

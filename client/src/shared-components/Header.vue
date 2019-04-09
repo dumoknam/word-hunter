@@ -1,6 +1,8 @@
 <template>
   <header class="header">
-    <header-logo class="header__logo"></header-logo>
+    <div class="header__logo" @click="goMain">
+      <header-logo></header-logo>
+    </div>
     <p class="header__logout">
       <button type="button" @click="logout">Logout</button>
     </p>
@@ -16,6 +18,9 @@ export default {
     'header-logo': Logo,
   },
   methods: {
+    goMain() {
+      this.$router.push('/main');
+    },
     logout() {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('isAuth');
@@ -33,9 +38,11 @@ export default {
   padding: 0.3em 1.5em;
   color: $masterContrastColor;
   background-color: $masterColor;
+  @include clearfix;
 
   .header__logo {
     float: left;
+    cursor: pointer;
   }
 
   .header__logout {

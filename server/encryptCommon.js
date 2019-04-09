@@ -3,7 +3,6 @@ const crypto = require('crypto');
 
 const encryptCommon = {
   jwtSign(secret, payload) {
-    console.log("secret : ", secret);
     return new Promise((resolve, reject) => {
       jwt.sign(payload, secret, {
         expiresIn: '365d',

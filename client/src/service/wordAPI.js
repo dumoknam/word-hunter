@@ -1,16 +1,16 @@
 import jwtAxios from './jwtAxios';
 
-const test = (token) => {
-  return jwtAxios(token).post('/api/word');
+const insertWord = (token, enterWordData) => {
+  return jwtAxios(token).post('/api/word', {
+    params: enterWordData,
+  });
 };
 
 export default {
-  async test(store) {
+  async enterWord(store, enterWordData) {
     try {
-      const p = await test(store.getters.getAccessToken);
+      const p = await insertWord(store.getters.getAccessToken, enterWordData);
       const response = await p;
-      console.log('API CALL!!!');
-      console.log(response);
       return response;
     } catch (error) {
       throw new Error(error);

@@ -60,10 +60,10 @@ export default {
     }
   },
   // api test
-  async test(store) {
+  async enterWord(store, enterWordData) {
     try {
-      const response = await wordAPI.test(store);
-      return response;
+      const response = await wordAPI.enterWord(store, enterWordData);
+      return response.data.success;
     } catch (error) {
       throw new Error(error);
     }

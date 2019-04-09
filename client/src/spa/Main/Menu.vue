@@ -1,32 +1,23 @@
 <template>
   <div class="menu">
-    <div class="menu__item menu__item--training" @click="test1">
+    <div class="menu__item menu__item--training">
         <i class="fas fa-running"></i>
     </div>
     <div class="menu__item menu__item--wholeWord">
       <i class="fas fa-list"></i>
     </div>
-    <div class="menu__item menu__item--enterWord">
+    <div class="menu__item menu__item--enterWord" @click="enterWord">
       <i class="fas fa-edit"></i>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   name: 'Menu',
   methods: {
-    ...mapActions(['test', 'test2']),
-    async test1() {
-      try {
-        console.log('start');
-        const result = await this.test();
-        console.log(result);
-      } catch (error) {
-        throw new Error(error);
-      }
+    enterWord() {
+      this.$router.push('/enterword');
     },
   },
 };

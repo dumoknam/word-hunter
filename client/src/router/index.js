@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Login from '@/spa/Login/Login';
 import SignUp from '@/spa/SignUp/SignUp';
 import Main from '@/spa/Main/Main';
+import EnterWord from '@/spa/WordContent/EnterWord';
 
 Vue.use(Router);
 
@@ -11,10 +12,10 @@ const redirectMain = (from, to, next) => {
   return next();
 };
 
-const requireAuth = (from, to, next) => {
-  if (localStorage.accessToken) return next(); // isAuth === true면 메인
-  return next('/'); // isAuth === false면 다시 로그인화면으로
-};
+// const requireAuth = (from, to, next) => {
+//   if (localStorage.accessToken) return next(); // isAuth === true면 메인
+//   return next('/'); // isAuth === false면 다시 로그인화면으로
+// };
 
 export default new Router({
   mode: 'history',
@@ -34,7 +35,12 @@ export default new Router({
       path: '/main',
       name: 'Main',
       component: Main,
-      beforeEnter: requireAuth,
+      // beforeEnter: requireAuth,
+    },
+    {
+      path: '/enterword',
+      name: 'EnterWord',
+      component: EnterWord,
     },
   ],
 });

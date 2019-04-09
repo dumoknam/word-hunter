@@ -10,7 +10,7 @@ const wordSchema = new Schema({
     trim: true,
     default: ''
   },
-  word_format: { type: mongoose.Schema.Types.ObjectId, ref: 'WordFormats' },
+  // word_format: { type: mongoose.Schema.Types.ObjectId, ref: 'WordFormats' },
   word_mean: [{ type: mongoose.Schema.Types.ObjectId, ref: 'WordMean' }],
   word_example: {
     type: String,
@@ -18,5 +18,12 @@ const wordSchema = new Schema({
     default: ''
   }
 });
+
+wordSchema.statics = {
+  create: function(word) {
+    const wordrow = new this(word);
+    return wordrow.save();
+  }
+}
 
 module.exports = mongoose.model('Word', wordSchema);

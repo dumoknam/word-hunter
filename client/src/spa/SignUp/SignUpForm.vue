@@ -35,18 +35,18 @@ export default {
     };
   },
   watch: {
-    name(data) {
+    name(now) {
       const reg = /^[a-zA-Z0-9]{4,15}/;
-      if (!reg.test(data)) {
+      if (!reg.test(now)) {
         this.nameGuide = 'Username may only at least 3 and contain alphanumeric characters';
       } else {
         this.isDuplicatedId();
       }
     },
-    password(data) {
+    password(now) {
       const reg = /(?=.*\d)(?=.*[a-zA-Z]).{8,15}/;
 
-      if (!reg.test(data)) {
+      if (!reg.test(now)) {
         this.passwordGuide = 'Make sure it\'s at least 8 charactors and including a alphabet and number';
         this.passwordOK = false;
       } else {
@@ -54,11 +54,11 @@ export default {
         this.passwordOK = true;
       }
     },
-    nickname(data) {
+    nickname(now) {
       // eslint-disable-next-line
       const reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
 
-      if (reg.test(data)) {
+      if (reg.test(now)) {
         this.nicknameGuide = 'No special characters!';
         this.nicknameOK = false;
       } else {
@@ -70,10 +70,10 @@ export default {
         this.nicknameOK = true;
       }
     },
-    email(data) {
+    email(now) {
       const reg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-      if (data && !reg.test(data)) {
+      if (now && !reg.test(now)) {
         this.emailGuide = 'Please enter a valid email address';
         this.emailOK = false;
       } else {
@@ -86,16 +86,6 @@ export default {
     ...mapGetters({
       apiResponseMessage: 'getApiResponseMessage',
     }),
-    signupData() {
-      return {
-        signupData: {
-          name: this.name,
-          password: this.password,
-          nickname: this.nickname,
-          email: this.email,
-        },
-      };
-    },
   },
   methods: {
     ...mapActions(['signup', 'idcheck']),
@@ -131,13 +121,14 @@ export default {
         return;
       }
 
+      const signupData = {
+        name: this.name,
+        password: this.password,
+        nickname: this.nickname,
+        email: this.email,
+      };
+
       try {
-        const signupData = {
-          name: this.name,
-          password: this.password,
-          nickname: this.nickname,
-          email: this.email,
-        };
         const isSuccess = await this.signup(signupData);
         alert(this.apiResponseMessage);
         if (isSuccess) {

@@ -61,6 +61,9 @@ userSchema.statics = {
   },
   findOneByName: function(name) {
     return this.findOne({ name });
+  },
+  findOneByNameCallback: function(name, callback) {
+    return this.findOne({ name }, callback);
   }
 }
 

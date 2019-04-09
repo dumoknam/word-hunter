@@ -100,7 +100,7 @@ export default {
   }
 }
 
-@media (min-width: $mobileMinWidth) {
+@media (min-width: $pcMinWidth) {
   .profile {
     .profile__main {
       height:inherit;

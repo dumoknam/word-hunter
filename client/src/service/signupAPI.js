@@ -2,12 +2,7 @@ import jwtAxios from './jwtAxios';
 
 const createUser = (signupData) => {
   return jwtAxios().post('/api/signup', {
-    params: {
-      name: signupData.name,
-      password: signupData.password,
-      nickname: signupData.nickname,
-      email: signupData.email,
-    },
+    params: signupData,
   });
 };
 
