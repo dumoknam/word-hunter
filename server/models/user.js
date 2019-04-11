@@ -42,7 +42,8 @@ const userSchema = new Schema({
     type: Date,
     require: true,
     default: Date.now,
-  }
+  },
+  learning_days: [{ type: Date }]
 });
 
 userSchema.statics = {
@@ -59,11 +60,16 @@ userSchema.statics = {
   findOneForLogin: function(name, password) {
     return this.findOne({ name, password });
   },
-  findOneByName: function(name) {
+  findOneByName: function(name, callback) {
     return this.findOne({ name });
   },
   findOneByNameCallback: function(name, callback) {
     return this.findOne({ name }, callback);
+  },
+  findWordList: function(name, callback) {
+    return this.findOne({ name })
+    .populate('words').populate('memorized')
+    .exec();
   }
 }
 

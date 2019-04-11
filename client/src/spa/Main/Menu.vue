@@ -1,9 +1,9 @@
 <template>
   <div class="menu">
-    <div class="menu__item menu__item--training">
+    <div class="menu__item menu__item--training" @click="wordTraining">
         <i class="fas fa-running"></i>
     </div>
-    <div class="menu__item menu__item--wholeWord">
+    <div class="menu__item menu__item--wordlist" @click="wordList">
       <i class="fas fa-list"></i>
     </div>
     <div class="menu__item menu__item--enterWord" @click="enterWord">
@@ -16,8 +16,14 @@
 export default {
   name: 'Menu',
   methods: {
+    wordTraining() {
+      this.$router.push('/wordtraining');
+    },
     enterWord() {
       this.$router.push('/enterword');
+    },
+    wordList() {
+      this.$router.push('/wordlist');
     },
   },
 };

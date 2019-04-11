@@ -1,10 +1,10 @@
 <template>
   <div class="enterWord">
-    <enterword-header class="enterWord__header"></enterword-header>
+    <common-header class="enterWord__header"></common-header>
     <div class="enterWord__body">
       <form class="form enterWord__form" @submit.prevent="onSubmit">
-        <custom-input-text label="English word" placeholder="Please enter an English word here" maxlength="50" v-model="word" ref="word"></custom-input-text>
-        <custom-input-text label="Meaning of word" placeholder="Enter it yourself" maxlength="50" v-model="mean" ref="mean"></custom-input-text>
+        <custom-input-text label="English word" placeholder="Please enter an English word here" maxlength="50" v-model="word" ref="word" :filtercallback="onlyAlphaHangulNum"></custom-input-text>
+        <custom-input-text label="Meaning of word" placeholder="Enter it yourself" maxlength="50" v-model="mean" ref="mean" :filtercallback="onlyAlphaHangulNum"></custom-input-text>
         <div class="wordList">
           <p class="wordList__notFoundMean" v-show="wordMeanNotExist">Not found means of word<p/>
           <div class="wordList__item" v-for="(value, key) in wordMeanList" :key="key">
@@ -21,13 +21,13 @@
 <script>
 import { mapActions } from 'vuex';
 import Header from '../../shared-components/Header';
-import customInputText from '../../shared-components/CustomInputText';
+import CustomInputText from '../../shared-components/CustomInputText';
 
 export default {
   name: 'EnterWord',
   components: {
-    'enterword-header': Header,
-    'custom-input-text': customInputText,
+    'common-header': Header,
+    'custom-input-text': CustomInputText,
   },
   data() {
     return {
@@ -50,9 +50,13 @@ export default {
   },
   methods: {
     ...mapActions(['enterWord']),
+    onlyAlphaHangulNum(value) {
+      const reg = /[^0-9ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z!~\s]/g;
+      return value.replace(reg, '');
+    },
     initProps() {
-      this.$refs.word.$refs.input.value = '';
-      this.$refs.mean.$refs.input.value = '';
+      this.word = '';
+      this.mean = '';
       this.wordMeanList = [];
       this.selectedMeanList = [];
     },
@@ -108,12 +112,20 @@ export default {
   display: block;
 
   .enterWord__body {
-    max-width: 35em;
-    margin: 0 auto;
+    // max-width: 35em;
+    position: relative; // new
+    height: 100%; // new
+    // margin: 0 auto;
     text-align: center;
-    padding: 1em 0.5em;
+    // padding: 1em 0.5em;
 
     .enterWord__form {
+      position: absolute; // new
+      top: 0; // new
+      left: 0; // new
+      bottom: 0; // new
+      right: 0; // new
+
       .wordList {
         position: relative;
         margin-bottom: 1em;

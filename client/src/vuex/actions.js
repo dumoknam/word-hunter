@@ -59,11 +59,19 @@ export default {
       throw new Error(error);
     }
   },
-  // api test
+  // 단어 등록
   async enterWord(store, enterWordData) {
     try {
       const response = await wordAPI.enterWord(store, enterWordData);
       return response.data.success;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  async getWordList(store) {
+    try {
+      const response = await wordAPI.getWordList(store);
+      return response.data.data.wordList;
     } catch (error) {
       throw new Error(error);
     }

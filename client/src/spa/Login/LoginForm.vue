@@ -12,12 +12,12 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import customInputText from '../../shared-components/CustomInputText';
+import CustomInputText from '../../shared-components/CustomInputText';
 
 export default {
   name: 'LoginForm',
   components: {
-    'custom-input-text': customInputText,
+    'custom-input-text': CustomInputText,
   },
   data() {
     return {

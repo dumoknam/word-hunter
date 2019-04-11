@@ -10,7 +10,7 @@ const util = require('../util');
  */
 exports.registeredWord = (req, res, next) => {
   const { word, means } = req.body.params;
-  const jwtobj = req.jwtobj;
+  const jwtObj = req.jwtobj;
 
   const insertWord = (wordmean) => {
     const meansid = wordmean.reduce((meansid, mean) => {
@@ -27,7 +27,8 @@ exports.registeredWord = (req, res, next) => {
   };
 
   const updateUser = (word) => {
-    User.findOneByNameCallback(jwtobj.name, (err, userData) => {
+    User.findOneByNameCallback(jwtObj.name, (error, userData) => {
+      if (error) res.status(500).json({error: 'failed to read'});
       userData.words.push({ _id: word._id });
       userData.save((error) => {
         if (error) res.status(500).json({error: 'failed to update'});
@@ -69,7 +70,24 @@ exports.removeWords = (req, res, next) => {
  * 단어 목록 조회
  */
 exports.getWordList = (req, res, next) => {
+  const jwtObj = req.jwtobj;
 
+  const onResponse = (user) => {
+    res.status(200).json(util.success('Read success', { wordList: user.words }));
+  };
+
+  const onError = (error) => {
+    console.log(error);
+    if (error.name === util.errorName) {
+      res.status(200).json(JSON.parse(error.message));
+    } else {
+      res.status(500).json(error);
+    }
+  };
+
+  User.findWordList(jwtObj.name)
+  .then(onResponse)
+  .catch(onError);
 };
 
 /**

@@ -2,7 +2,7 @@
   <div class="customInput">
     <label v-if="label" class="customInput__label" :for="'customInput' + seq">{{ label }}</label>
     <input :type="type" class="customInput__input" :id="'customInput' + seq" :maxlength="maxlength"
-    :placeholder="placeholder" @input="updateValue($event.target.value)" ref="input">
+    :placeholder="placeholder" @input="updateValue($event.target.value)" ref="input" v-model="inputValue">
     <p class="customInput__guide">{{guide}}</p>
   </div>
 </template>
@@ -39,9 +39,13 @@ export default {
       type: String,
       default: '',
     },
+    filtercallback: {
+      type: Function,
+    },
   },
   data() {
     return {
+      inputValue: '',
     };
   },
   computed: {
@@ -49,9 +53,19 @@ export default {
       return this.isPassword === 'true' ? 'password' : 'text';
     },
   },
+  watch: {
+    value(now) {
+      this.inputValue = now;
+    },
+  },
   methods: {
     updateValue(value) {
-      this.$emit('input', value);
+      if (this.filtercallback) {
+        this.inputValue = this.filtercallback(value);
+        this.$emit('input', this.inputValue);
+      } else {
+        this.$emit('input', value);
+      }
     },
   },
 };

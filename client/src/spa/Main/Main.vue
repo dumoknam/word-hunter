@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <main-header class="main__header"></main-header>
+    <common-header class="main__header"></common-header>
     <main-profile class="main__profile"></main-profile>
     <main-menu class="main__menu"></main-menu>
   </div>
@@ -14,7 +14,7 @@ import Menu from './Menu';
 export default {
   name: 'Main',
   components: {
-    'main-header': Header,
+    'common-header': Header,
     'main-profile': Profile,
     'main-menu': Menu,
   },
