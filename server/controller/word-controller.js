@@ -73,6 +73,7 @@ exports.getWordList = (req, res, next) => {
   const jwtObj = req.jwtobj;
 
   const onResponse = (user) => {
+    console.log(user.words);
     res.status(200).json(util.success('Read success', { wordList: user.words }));
   };
 

@@ -37,7 +37,7 @@ export default new Router({
       path: '/main',
       name: 'Main',
       component: Main,
-      beforeEnter: requireAuth,
+      // beforeEnter: requireAuth,
     },
     {
       path: '/wordtraining',
@@ -49,7 +49,7 @@ export default new Router({
       path: '/wordlist',
       name: 'WordList',
       component: WordList,
-      beforeEnter: requireAuth,
+      // beforeEnter: requireAuth,
     },
     {
       path: '/enterword',

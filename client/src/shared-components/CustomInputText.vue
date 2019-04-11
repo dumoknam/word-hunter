@@ -2,7 +2,7 @@
   <div class="customInput">
     <label v-if="label" class="customInput__label" :for="'customInput' + seq">{{ label }}</label>
     <input :type="type" class="customInput__input" :id="'customInput' + seq" :maxlength="maxlength"
-    :placeholder="placeholder" @input="updateValue($event.target.value)" ref="input" v-model="inputValue">
+    :placeholder="placeholder" @input="updateValue($event.target.value)" ref="input" v-model="inputValue" autocomplete="off">
     <p class="customInput__guide">{{guide}}</p>
   </div>
 </template>
@@ -91,6 +91,7 @@ export default {
     line-height: 2em;
     box-sizing: border-box;
     padding: 5px;
+    font-size: 0.9em;
     margin: 0.5em 0;
     outline: none;
 

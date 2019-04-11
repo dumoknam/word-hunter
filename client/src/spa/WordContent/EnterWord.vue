@@ -1,8 +1,9 @@
 <template>
   <div class="enterWord">
+    <div class="enterWord__background"></div>
     <common-header class="enterWord__header"></common-header>
     <div class="enterWord__body">
-      <form class="form enterWord__form" @submit.prevent="onSubmit">
+      <form class="enterWord__form" @submit.prevent="onSubmit">
         <custom-input-text label="English word" placeholder="Please enter an English word here" maxlength="50" v-model="word" ref="word" :filtercallback="onlyAlphaHangulNum"></custom-input-text>
         <custom-input-text label="Meaning of word" placeholder="Enter it yourself" maxlength="50" v-model="mean" ref="mean" :filtercallback="onlyAlphaHangulNum"></custom-input-text>
         <div class="wordList">
@@ -35,6 +36,18 @@ export default {
       mean: '',
       // 추후에 api로 단어 검색해서 뜻 여기다 넣어주면됨 아래 양식대로
       wordMeanList: [
+        // { mean: 'Alpaca0' },
+        // { mean: 'Alpaca1' },
+        // { mean: 'Alpaca2' },
+        // { mean: 'Alpaca3' },
+        // { mean: 'Alpaca0' },
+        // { mean: 'Alpaca1' },
+        // { mean: 'Alpaca2' },
+        // { mean: 'Alpaca3' },
+        // { mean: 'Alpaca0' },
+        // { mean: 'Alpaca1' },
+        // { mean: 'Alpaca2' },
+        // { mean: 'Alpaca3' },
         // { mean: 'Alpaca0' },
         // { mean: 'Alpaca1' },
         // { mean: 'Alpaca2' },
@@ -108,24 +121,19 @@ export default {
 @import '../../assets/scss/common/base';
 
 .enterWord {
-  height: 100vh;
-  display: block;
+  .enterWord__background {
+    @include fixedBackground;
+  }
+
+  .enterWord__header {
+    @include fixedHeader;
+  }
 
   .enterWord__body {
-    // max-width: 35em;
-    position: relative; // new
-    height: 100%; // new
-    // margin: 0 auto;
+    @include bodyPadding;
     text-align: center;
-    // padding: 1em 0.5em;
 
     .enterWord__form {
-      position: absolute; // new
-      top: 0; // new
-      left: 0; // new
-      bottom: 0; // new
-      right: 0; // new
-
       .wordList {
         position: relative;
         margin-bottom: 1em;
