@@ -1,28 +1,56 @@
 import jwtAxios from './jwtAxios';
 
-const createWord = (token, enterWordData) => {
+const createWordAPI = (token, createWordData) => {
   return jwtAxios(token).post('/api/word', {
-    params: enterWordData,
+    params: createWordData,
   });
 };
 
-const readWordList = (token) => {
+const readWordListAPI = (token) => {
   return jwtAxios(token).get('/api/word');
 };
 
+const updateWordAPI = (token, updateWordData) => {
+  return jwtAxios(token).put('/api/word', {
+    params: updateWordData,
+  });
+};
+
+const deleteWordAPI = (token, wordId) => {
+  return jwtAxios(token).delete(`/api/word/${wordId}`);
+};
+
 export default {
-  async enterWord(store, enterWordData) {
+  async createWord(store, createWordData) {
     try {
-      const p = await createWord(store.getters.getAccessToken, enterWordData);
+      const p = await createWordAPI(store.getters.getAccessToken, createWordData);
       const response = await p;
       return response;
     } catch (error) {
       throw new Error(error);
     }
   },
-  async getWordList(store) {
+  async readWordList(store) {
     try {
-      const p = await readWordList(store.getters.getAccessToken);
+      const p = await readWordListAPI(store.getters.getAccessToken);
+      const response = await p;
+      return response;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  async updateWord(store, updateWordData) {
+    try {
+      const p = await updateWordAPI(store.getters.getAccessToken, updateWordData);
+      const response = await p;
+      return response;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  async deleteWord(store, wordId) {
+    try {
+      const p = await deleteWordAPI(store.getters.getAccessToken, wordId);
       const response = await p;
       return response;
     } catch (error) {

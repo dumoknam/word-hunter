@@ -48,5 +48,11 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'arrow-body-style': ['error', 'always'],
     'max-len': ['error', {'code': 200}],
+    "no-underscore-dangle": ['error', {
+      'allow': ['_id'],
+      'allowAfterThis': true,
+      'allowAfterSuper': true,
+      'enforceInMethodNames': true
+    }]
   }
 }

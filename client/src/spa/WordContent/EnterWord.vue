@@ -4,8 +4,10 @@
     <common-header class="enterWord__header"></common-header>
     <div class="enterWord__body">
       <form class="enterWord__form" @submit.prevent="onSubmit">
-        <custom-input-text label="English word" placeholder="Please enter an English word here" maxlength="50" v-model="word" ref="word" :filtercallback="onlyAlphaHangulNum"></custom-input-text>
-        <custom-input-text label="Meaning of word" placeholder="Enter it yourself" maxlength="50" v-model="mean" ref="mean" :filtercallback="onlyAlphaHangulNum"></custom-input-text>
+        <custom-input-text seq="EnterWordForm1" label="English word" placeholder="Please enter an English word here"
+        maxlength="50" v-model="word" ref="word" :filtercallback="onlyAlphaHangulNum"></custom-input-text>
+        <custom-input-text seq="EnterWordForm2" label="Meaning of word" placeholder="Enter it yourself"
+        maxlength="50" v-model="mean" ref="mean" :filtercallback="onlyAlphaHangulNum"></custom-input-text>
         <div class="wordList">
           <p class="wordList__notFoundMean" v-show="wordMeanNotExist">Not found means of word<p/>
           <div class="wordList__item" v-for="(value, key) in wordMeanList" :key="key">
@@ -40,18 +42,12 @@ export default {
         // { mean: 'Alpaca1' },
         // { mean: 'Alpaca2' },
         // { mean: 'Alpaca3' },
-        // { mean: 'Alpaca0' },
-        // { mean: 'Alpaca1' },
-        // { mean: 'Alpaca2' },
-        // { mean: 'Alpaca3' },
-        // { mean: 'Alpaca0' },
-        // { mean: 'Alpaca1' },
-        // { mean: 'Alpaca2' },
-        // { mean: 'Alpaca3' },
-        // { mean: 'Alpaca0' },
-        // { mean: 'Alpaca1' },
-        // { mean: 'Alpaca2' },
-        // { mean: 'Alpaca3' },
+        // { mean: 'Alpaca4' },
+        // { mean: 'Alpaca5' },
+        // { mean: 'Alpaca6' },
+        // { mean: 'Alpaca7' },
+        // { mean: 'Alpaca8' },
+        // { mean: 'Alpaca9' },
       ],
       selectedMeanList: [],
     };
@@ -62,7 +58,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['enterWord']),
+    ...mapActions(['createWord']),
     onlyAlphaHangulNum(value) {
       const reg = /[^0-9ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z!~\s]/g;
       return value.replace(reg, '');
@@ -104,7 +100,7 @@ export default {
       };
 
       try {
-        const isSuccess = await this.enterWord(enterWordData);
+        const isSuccess = await this.createWord(enterWordData);
         if (isSuccess) {
           alert('Success!');
           this.initProps();

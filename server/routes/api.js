@@ -22,12 +22,18 @@ router.post('/word', authController.isLogin, wordController.registeredWord);
 router.put('/word', authController.isLogin, wordController.updateWord);
 
 // 단어 삭제
-router.delete('/word', authController.isLogin, wordController.removeWords);
+router.delete('/word/:word_id', authController.isLogin, wordController.removeWords);
 
 // 단어 목록 조회
 router.get('/word', authController.isLogin, wordController.getWordList);
 
 // 단어 조회
-router.get('/word/:id', authController.isLogin, wordController.getWord);
+router.get('/word/:word_id', authController.isLogin, wordController.getWord);
+
+// 단어 의미 수정
+router.put('/mean', authController.isLogin, wordMeanController.updaateWordMean);
+
+// 단어 의미 삭제
+router.delete('/mean/:mean_id', authController.isLogin, wordMeanController.deleteWordMean);
 
 module.exports = router;

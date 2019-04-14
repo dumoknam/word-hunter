@@ -2,8 +2,8 @@
   <div class="customInput">
     <label v-if="label" class="customInput__label" :for="'customInput' + seq">{{ label }}</label>
     <input :type="type" class="customInput__input" :id="'customInput' + seq" :maxlength="maxlength"
-    :placeholder="placeholder" @input="updateValue($event.target.value)" ref="input" v-model="inputValue" autocomplete="off">
-    <p class="customInput__guide">{{guide}}</p>
+    :placeholder="placeholder" @input="updateValue($event.target.value)" ref="input" v-model="inputValue" autocomplete="off" @focus="focusIn()" @blur="focusOut()">
+    <p class="customInput__guide">{{ guide }}</p>
   </div>
 </template>
 
@@ -42,6 +42,12 @@ export default {
     filtercallback: {
       type: Function,
     },
+    focusincallback: {
+      type: Function,
+    },
+    focusoutcallback: {
+      type: Function,
+    },
   },
   data() {
     return {
@@ -59,6 +65,16 @@ export default {
     },
   },
   methods: {
+    focusIn() {
+      if (this.focusincallback) {
+        this.focusincallback();
+      }
+    },
+    focusOut() {
+      if (this.focusoutcallback) {
+        this.focusoutcallback();
+      }
+    },
     updateValue(value) {
       if (this.filtercallback) {
         this.inputValue = this.filtercallback(value);
@@ -67,6 +83,9 @@ export default {
         this.$emit('input', value);
       }
     },
+  },
+  created() {
+    this.inputValue = this.value;
   },
 };
 </script>

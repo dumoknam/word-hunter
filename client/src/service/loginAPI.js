@@ -5,7 +5,7 @@ import jwtAxios from './jwtAxios';
  * @param {*} name 사용자 아이디
  * @param {*} password 사용자 비밀번호
  */
-const getUserInfo = (loginData) => {
+const readUserAPI = (loginData) => {
   return jwtAxios().post('/api/login', {
     params: loginData,
   });
@@ -14,7 +14,7 @@ const getUserInfo = (loginData) => {
 export default {
   async login(loginData) {
     try {
-      const p = await getUserInfo(loginData);
+      const p = await readUserAPI(loginData);
       const [response] = await Promise.all([p]);
       return response.data;
     } catch (error) {

@@ -18,7 +18,7 @@ exports.registeredUser = (req, res, next) => {
     throw util.LogicalError('You have to receive user password');
   }
 
-  const userCreate = ({encryptPassword, salt}) => {
+  const userCreate = ({ encryptPassword, salt }) => {
     return User.create(name, encryptPassword, salt, nickname, email);
   };
 

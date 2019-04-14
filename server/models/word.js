@@ -23,6 +23,22 @@ wordSchema.statics = {
   create: function(word) {
     const wordrow = new this(word);
     return wordrow.save();
+  },
+  findOneById: function(_id) {
+    return this.findOne({ _id });
+  },
+  findByMeanId: function(_id) {
+    return this.find({ 
+      word_mean: { 
+        $all: [_id]
+      }
+    });
+  },
+  updateWord: function(_id, word_name) {
+    return this.updateOne({ _id }, { word_name });
+  },
+  deleteOneById: function(_id) {
+    return this.deleteOne({ _id });
   }
 }
 

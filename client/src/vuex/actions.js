@@ -2,6 +2,7 @@ import { ACCESS_TOKEN, IS_AUTH, API_RESPONSE_MESSAGE } from './mutation_type';
 import loginAPI from '../service/loginAPI';
 import signupAPI from '../service/signupAPI';
 import wordAPI from '../service/wordAPI';
+import wordMeanAPI from '../service/wordMeanAPI';
 
 const setAccessToken = ({ commit }, token) => {
   commit(ACCESS_TOKEN, token);
@@ -60,18 +61,55 @@ export default {
     }
   },
   // 단어 등록
-  async enterWord(store, enterWordData) {
+  async createWord(store, enterWordData) {
     try {
-      const response = await wordAPI.enterWord(store, enterWordData);
+      const response = await wordAPI.createWord(store, enterWordData);
       return response.data.success;
     } catch (error) {
       throw new Error(error);
     }
   },
-  async getWordList(store) {
+  // 단어 목록 조회
+  async readWordList(store) {
     try {
-      const response = await wordAPI.getWordList(store);
+      const response = await wordAPI.readWordList(store);
       return response.data.data.wordList;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  // 단어 수정
+  async updateWord(store, updateWordData) {
+    try {
+      const response = await wordAPI.updateWord(store, updateWordData);
+      return response.data.success;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  // 단어 삭제
+  async deleteWord(store, wordId) {
+    try {
+      const response = await wordAPI.deleteWord(store, wordId);
+      return response.data.success;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  // 단어 의미 수정
+  async updateWordMean(store, updateWordMeanData) {
+    try {
+      const response = await wordMeanAPI.updateWordMean(store, updateWordMeanData);
+      return response.data.success;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  // 단어 의미 삭제
+  async deleteWordMean(store, meanId) {
+    try {
+      const response = await wordMeanAPI.deleteWordMean(store, meanId);
+      return response.data.success;
     } catch (error) {
       throw new Error(error);
     }

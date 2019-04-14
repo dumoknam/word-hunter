@@ -1,19 +1,19 @@
 import jwtAxios from './jwtAxios';
 
-const createUser = (signupData) => {
+const createUserAPI = (signupData) => {
   return jwtAxios().post('/api/signup', {
     params: signupData,
   });
 };
 
-const idcheck = (name) => {
+const idcheckAPI = (name) => {
   return jwtAxios().get(`/api/idcheck/${name}`);
 };
 
 export default {
   async signup(signupData) {
     try {
-      const p = await createUser(signupData);
+      const p = await createUserAPI(signupData);
       const [response] = await Promise.all([p]);
       return response.data;
     } catch (error) {
@@ -22,7 +22,7 @@ export default {
   },
   async idcheck(name) {
     try {
-      const p = await idcheck(name);
+      const p = await idcheckAPI(name);
       const response = await p;
       return response.data;
     } catch (error) {
