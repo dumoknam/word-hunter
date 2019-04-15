@@ -50,6 +50,14 @@ export default {
       grid-column: 1 / 3;
     }
 
+    &:hover {
+      background-color: $subColor;
+
+      i {
+        transform: scale(1.5) translate(-25%, -25%);
+      }
+    }
+
     i {
       display: inline-block;
       font-size: 3em;
@@ -58,14 +66,6 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%);
       transition: all ease 1s;
-    }
-
-    &:hover {
-      background-color: $subColor;
-
-      i {
-        transform: scale(1.5) translate(-25%, -25%);
-      }
     }
   }
 }

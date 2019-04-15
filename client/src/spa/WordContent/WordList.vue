@@ -96,6 +96,13 @@ export default {
         memorized[i].isMemorized = true;
         this.wordList.push(memorized[i]);
       }
+
+      // 정렬(대소문자 상관 없이)
+      this.wordList.sort((a, b) => {
+        if (a.word_name.toLowerCase() < b.word_name.toLowerCase()) return -1;
+        if (b.word_name.toLowerCase() < a.word_name.toLowerCase()) return 1;
+        return 0;
+      });
     },
     // 단어 전체 조회
     async getFullWordList() {
@@ -301,11 +308,12 @@ $item-margin: 0.4em;
         .summary__wordMean {
           width: 50%;
           text-align: right;
-          font-size: 0.9em;
+          font-size: 1em;
           padding-top: 0.1em;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
+          font-weight: $fontBold;
         }
       }
 
