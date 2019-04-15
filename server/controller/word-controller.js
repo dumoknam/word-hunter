@@ -79,11 +79,13 @@ exports.updateWord = (req, res, next) => {
 };
 
 /**
- * 단어 삭제
+ * 단어 삭제(기본)
  */
-exports.removeWords = (req, res, next) => {
+exports.removeWord = (req, res, next) => {
   const wordId = req.params.word_id;
+  const isMemorized = JSON.parse(req.params.is_memorized);
   const jwtObj = req.jwtobj;
+  console.log(isMemorized);
 
   // word collection 조회 & word mean 제거 / 성공여부 리턴
   const deleteWordMean = (word) => {
@@ -110,8 +112,17 @@ exports.removeWords = (req, res, next) => {
 
   // 사용자 words 에서 word 제거 후 save / 성공여부 리턴
   const updateUser = (user) => {
-    const index = user.words.indexOf(wordId);
-    user.words.splice(index, 1);
+    if (isMemorized) {
+      // memorized에 있는 단어를 제거시
+      const index = user.memorized.indexOf(wordId);
+      if (index > -1)
+        user.memorized.splice(index, 1);
+    } else {
+      // 일반 단어 목록(words)에 있는 단어를 제거시
+      const index = user.words.indexOf(wordId);
+      if (index > -1)
+        user.words.splice(index, 1);
+    }
     user.save((error) => {
       if (error) res.status(500).json({ error: 'Failed to update' });
     });
@@ -149,7 +160,10 @@ exports.getWordList = (req, res, next) => {
   const jwtObj = req.jwtobj;
 
   const onResponse = (user) => {
-    res.status(200).json(util.success('Read success', { wordList: user.words }));
+    res.status(200).json(util.success('Read success', { 
+      wordList: user.words,
+      memorizedList: user.memorized
+    }));
   };
 
   const onError = (error) => {
@@ -170,5 +184,26 @@ exports.getWordList = (req, res, next) => {
  * 단어 조회
  */
 exports.getWord = (req, res, next) => {
+  const jwtObj = req.jwtobj;
+  const { keyword } = req.params;
 
+  const onResponse = (user) => {
+    res.status(200).json(util.success('Read success', { 
+      wordList: user.words,
+      memorizedList: user.memorized
+    }));
+  };
+
+  const onError = (error) => {
+    console.error(error);
+    if (error.name === util.errorName) {
+      res.status(200).json(JSON.parse(error.message));
+    } else {
+      res.status(500).json(error);
+    }
+  };
+
+  User.findWordListByKeyword(jwtObj.name, keyword)
+  .then(onResponse)
+  .catch(onError);
 };

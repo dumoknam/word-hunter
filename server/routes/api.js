@@ -22,13 +22,13 @@ router.post('/word', authController.isLogin, wordController.registeredWord);
 router.put('/word', authController.isLogin, wordController.updateWord);
 
 // 단어 삭제
-router.delete('/word/:word_id', authController.isLogin, wordController.removeWords);
+router.delete('/word/:word_id/:is_memorized', authController.isLogin, wordController.removeWord);
 
 // 단어 목록 조회
 router.get('/word', authController.isLogin, wordController.getWordList);
 
-// 단어 조회
-router.get('/word/:word_id', authController.isLogin, wordController.getWord);
+// 단어 조회 by word_name or mean
+router.get('/word/:keyword', authController.isLogin, wordController.getWord);
 
 // 단어 의미 수정
 router.put('/mean', authController.isLogin, wordMeanController.updaateWordMean);

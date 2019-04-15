@@ -4,7 +4,8 @@
     <common-header class="wordlist__header"></common-header>
     <div class="wordList__body">
       <form class="wordList__searchForm" action="#">
-        <custom-input-text seq="WordListForm1" label="What words would you like to find?" placeholder="Enter the word or mean" maxlength="50" v-model="searchKeyword"></custom-input-text>
+        <custom-input-text seq="WordListForm1" label="What words would you like to find?" placeholder="Enter the word"
+        maxlength="50" v-model="searchKeyword" :filtercallback="onlyAlphaHangulNum"></custom-input-text>
       </form>
       <div class="wordList__messageWrap" v-show="hasNotWordItem">
         <p class="wordList__notFoundWord">Not found word<p/>
@@ -24,7 +25,7 @@
             <div class="item_messageWrap" v-show="hasNotWordMeanItem">
               <p class="item_notFoundMean">Not found mean</p>
             </div>
-            <button type="button" class="btn item__delete" @click="setDeleteWord(item._id)">Delete</button>
+            <button type="button" class="btn item__delete" @click="setDeleteWord(item._id, item.isMemorized)">Delete</button>
           </div>
         </div>
       </div>
@@ -57,6 +58,15 @@ export default {
       originalMean: '',
     };
   },
+  watch: {
+    searchKeyword(now) {
+      if (now !== '') {
+        this.searchWord(now);
+      } else {
+        this.getFullWordList();
+      }
+    },
+  },
   computed: {
     hasNotWordItem() {
       return this.wordList.length < 1;
@@ -66,18 +76,46 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['readWordList', 'updateWord', 'deleteWord', 'updateWordMean', 'deleteWordMean']),
+    ...mapActions(['readWordList', 'readWord', 'updateWord', 'deleteWord', 'updateWordMean', 'deleteWordMean']),
     onlyAlphaHangulNum(value) {
       const reg = /[^0-9ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z!~\s]/g;
       return value.replace(reg, '');
     },
+    setWordList(wordList, memorizedList) {
+      this.wordList = [];
+      const words = wordList;
+      const memorized = memorizedList;
+
+      // which words not memorized
+      for (let i = 0; i < words.length; i += 1) {
+        words[i].isMemorized = false;
+        this.wordList.push(words[i]);
+      }
+      // which words memorized
+      for (let i = 0; i < memorized.length; i += 1) {
+        memorized[i].isMemorized = true;
+        this.wordList.push(memorized[i]);
+      }
+    },
+    // 단어 전체 조회
     async getFullWordList() {
       try {
-        this.wordList = await this.readWordList();
+        const data = await this.readWordList();
+        this.setWordList(data.wordList, data.memorizedList);
       } catch (error) {
         throw new Error(error);
       }
     },
+    // 키워드(단어명)을 통한 조회
+    async searchWord(keyword) {
+      try {
+        const data = await this.readWord(keyword);
+        this.setWordList(data.wordList, data.memorizedList);
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    // 단어명 수정
     async setUpdateWord(wordId, word) {
       const updateWordData = { wordId, word };
       try {
@@ -89,10 +127,13 @@ export default {
         throw new Error(error);
       }
     },
-    async setDeleteWord(wordId) {
+    // 단어 삭제
+    async setDeleteWord(wordId, isMemorized) {
       try {
-        // 메모라이즈드에 있는거 아닌거 구분해놓고 삭제시키기
-        const isSuccess = await this.deleteWord(wordId);
+        // 후에 단어 트레이닝시 암기된 단어와 그렇지 않은 단어를 구분지어
+        // 컨텐츠를 제공하기 위해서 isMemorized를 추가하였다
+        const deleteData = { wordId, isMemorized };
+        const isSuccess = await this.deleteWord(deleteData);
         if (isSuccess) {
           this.wordList.splice(this.selectedWordIndex, 1);
           this.initSelectedItem();
@@ -101,6 +142,7 @@ export default {
         throw new Error(error);
       }
     },
+    // 단어 뜻 수정
     async setUpdateWordMean(meanId, mean) {
       const updateWordMeanData = { meanId, mean };
       try {
@@ -112,10 +154,10 @@ export default {
         throw new Error(error);
       }
     },
+    // 단어 뜻 삭제
     async setDeleteWordMean(meanId) {
       try {
         const isSuccess = await this.deleteWordMean(meanId);
-        console.log(isSuccess);
         if (isSuccess) {
           this.wordList[this.selectedWordIndex].word_mean.splice(this.focusedMeanIndex, 1);
         }
@@ -268,13 +310,14 @@ $item-margin: 0.4em;
       }
 
       .item__detail {
-        border-top: 1px solid $masterContrastColor;
+        border-top: 2px solid $masterContrastColor;
         padding-top: 1em;
 
         .item_messageWrap {
           position: relative;
           width: 100%;
-          height: 8em;
+          height: 6em;
+          margin-bottom: 1em;
 
           .item_notFoundMean {
             position: absolute;

@@ -73,7 +73,16 @@ export default {
   async readWordList(store) {
     try {
       const response = await wordAPI.readWordList(store);
-      return response.data.data.wordList;
+      return response.data.data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  // 단어 검색
+  async readWord(store, keyword) {
+    try {
+      const response = await wordAPI.readWord(store, keyword);
+      return response.data.data;
     } catch (error) {
       throw new Error(error);
     }
@@ -88,9 +97,9 @@ export default {
     }
   },
   // 단어 삭제
-  async deleteWord(store, wordId) {
+  async deleteWord(store, deleteData) {
     try {
-      const response = await wordAPI.deleteWord(store, wordId);
+      const response = await wordAPI.deleteWord(store, deleteData.wordId, deleteData.isMemorized);
       return response.data.success;
     } catch (error) {
       throw new Error(error);

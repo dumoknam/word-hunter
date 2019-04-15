@@ -74,8 +74,24 @@ userSchema.statics = {
     }).populate({
       path: 'memorized',
       populate: { path: 'word_mean' }
-    })
-    .exec();
+    }).exec();
+  },
+  findWordListByKeyword: function(name, keyword) {
+    return this.findOne({ name })
+    .populate({
+      path: 'words',
+      // match: {
+      //   $or: [
+      //     { 'word_name': { $regex: keyword, $options: 'i' } },
+      //   ]
+      // },
+      match: { 'word_name': { $regex: keyword, $options: 'i' } },
+      populate: { path: 'word_mean' }
+    }).populate({
+      path: 'memorized',
+      match: { 'word_name': { $regex: keyword, $options: 'i' } },
+      populate: { path: 'word_mean' }
+    }).exec();
   }
 }
 
