@@ -3,7 +3,6 @@ import loginAPI from '../service/loginAPI';
 import signupAPI from '../service/signupAPI';
 import wordAPI from '../service/wordAPI';
 import wordMeanAPI from '../service/wordMeanAPI';
-import { increaseWordScore } from '../../../server/controller/word-controller';
 
 const setAccessToken = ({ commit }, token) => {
   commit(ACCESS_TOKEN, token);
