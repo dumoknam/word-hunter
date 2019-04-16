@@ -76,15 +76,24 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['readWordList', 'readWord', 'updateWord', 'deleteWord', 'updateWordMean', 'deleteWordMean']),
+    ...mapActions([
+      'readWordList',
+      'readWord',
+      'updateWord',
+      'deleteWord',
+      'updateWordMean',
+      'deleteWordMean',
+    ]),
     onlyAlphaHangulNum(value) {
-      const reg = /[^0-9ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z!~\s]/g;
+      const reg = /[^0-9ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z!~,\s]/g;
       return value.replace(reg, '');
     },
     setWordList(wordList, memorizedList) {
       this.wordList = [];
       const words = wordList;
       const memorized = memorizedList;
+
+      this.initSelectedItem();
 
       // which words not memorized
       for (let i = 0; i < words.length; i += 1) {

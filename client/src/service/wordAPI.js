@@ -24,6 +24,16 @@ const deleteWordAPI = (token, wordId, isMemorized) => {
   return jwtAxios(token).delete(`/api/word/${wordId}/${isMemorized}`);
 };
 
+const getExamQuestionAPI = (token, type) => {
+  return jwtAxios(token).get(`/api/exam/${type}`);
+};
+
+const increaseWordScoreAPI = (token, wordId) => {
+  return jwtAxios(token).put('/api/word/score/increase', {
+    params: { wordId },
+  });
+};
+
 export default {
   async createWord(store, createWordData) {
     try {
@@ -64,6 +74,24 @@ export default {
   async deleteWord(store, wordId, isMemorized) {
     try {
       const p = await deleteWordAPI(store.getters.getAccessToken, wordId, isMemorized);
+      const response = await p;
+      return response;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  async getExamQuestion(store, type) {
+    try {
+      const p = await getExamQuestionAPI(store.getters.getAccessToken, type);
+      const response = await p;
+      return response;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  async increaseWordScore(store, wordId) {
+    try {
+      const p = await increaseWordScoreAPI(store.getters.getAccessToken, wordId);
       const response = await p;
       return response;
     } catch (error) {

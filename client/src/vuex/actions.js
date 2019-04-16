@@ -3,6 +3,7 @@ import loginAPI from '../service/loginAPI';
 import signupAPI from '../service/signupAPI';
 import wordAPI from '../service/wordAPI';
 import wordMeanAPI from '../service/wordMeanAPI';
+import { increaseWordScore } from '../../../server/controller/word-controller';
 
 const setAccessToken = ({ commit }, token) => {
   commit(ACCESS_TOKEN, token);
@@ -100,6 +101,24 @@ export default {
   async deleteWord(store, deleteData) {
     try {
       const response = await wordAPI.deleteWord(store, deleteData.wordId, deleteData.isMemorized);
+      return response.data.success;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  // 단어 퀴즈 조회
+  async getExamQuestion(store, type) {
+    try {
+      const response = await wordAPI.getExamQuestion(store, type);
+      return response.data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  // 단어 스코어 증가
+  async increaseWordScore(store, wordId) {
+    try {
+      const response = await wordAPI.increaseWordScore(store, wordId);
       return response.data.success;
     } catch (error) {
       throw new Error(error);

@@ -60,7 +60,7 @@ export default {
   methods: {
     ...mapActions(['createWord']),
     onlyAlphaHangulNum(value) {
-      const reg = /[^0-9ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z!~\s]/g;
+      const reg = /[^0-9ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z!~,\s]/g;
       return value.replace(reg, '');
     },
     initProps() {
