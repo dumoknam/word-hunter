@@ -5,6 +5,7 @@ const authController  = require('../controller/auth-controller');
 const userController  = require('../controller/user-controller');
 const wordController  = require('../controller/word-controller');
 const wordMeanController = require('../controller/word-mean-controller');
+const examController  = require('../controller/exam-controller');
 
 // 유저 등록
 router.post('/signup', userController.registeredUser);
@@ -21,6 +22,9 @@ router.post('/word', authController.isLogin, wordController.registeredWord);
 // 단어 수정
 router.put('/word', authController.isLogin, wordController.updateWord);
 
+// 단어 스코어 카운트 업
+router.put('/word/score/increase', authController.isLogin, wordController.increaseWordScore);
+
 // 단어 삭제
 router.delete('/word/:word_id/:is_memorized', authController.isLogin, wordController.removeWord);
 
@@ -35,5 +39,8 @@ router.put('/mean', authController.isLogin, wordMeanController.updaateWordMean);
 
 // 단어 의미 삭제
 router.delete('/mean/:mean_id', authController.isLogin, wordMeanController.deleteWordMean);
+
+// 단어 문제 출제
+router.get('/exam/:type', authController.isLogin, examController.getExamQuestion);
 
 module.exports = router;

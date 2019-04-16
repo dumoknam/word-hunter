@@ -66,10 +66,11 @@ userSchema.statics = {
   findOneByNameCallback: function(name, callback) {
     return this.findOne({ name }, callback);
   },
-  findWordList: function(name) {
+  findWordList: function(name, options) {
     return this.findOne({ name })
     .populate({
       path: 'words',
+      options,
       populate: { path: 'word_mean' }
     }).populate({
       path: 'memorized',

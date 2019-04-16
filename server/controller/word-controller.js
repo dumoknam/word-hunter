@@ -79,6 +79,35 @@ exports.updateWord = (req, res, next) => {
 };
 
 /**
+ * 단어 스코어 증가
+ */
+exports.increaseWordScore = (req, res, next) => {
+  const { wordId } = req.body.params;
+
+  const onResponse = (word) => {
+    const wordClone = word;
+    wordClone.score += 1;
+    wordClone.save((error) => {
+      if (error) res.status(500).json({ error: 'Failed to update' });
+      res.status(200).json(util.success('Score increased'));
+    });
+  };
+
+  const onError = (error) => {
+    console.error(error);
+    if (error.name === util.errorName) {
+      res.status(200).json(JSON.parse(error.message));
+    } else {
+      res.status(500).json(error);
+    }
+  };
+
+  Word.findOneById(wordId)
+  .then(onResponse)
+  .catch(onError);
+};
+
+/**
  * 단어 삭제(기본)
  */
 exports.removeWord = (req, res, next) => {

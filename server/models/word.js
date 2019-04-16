@@ -16,6 +16,10 @@ const wordSchema = new Schema({
     type: String,
     trim: true,
     default: ''
+  },
+  score: {
+    type: Number,
+    default: 0
   }
 });
 
