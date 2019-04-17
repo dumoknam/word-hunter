@@ -28,11 +28,18 @@ export default {
   height: 100vh;
   display: grid;
   grid-template: 3.6em 40% 1fr / 100%;
+
+  .main__profile {
+    // 학습일수, 외운단어, 외워야할 단어 이력 개발 완료되면 다시 보이게하기
+    display: none;
+  }
 }
 
 @media (min-width: $pcMinWidth) {
   .main {
-    grid-template: 3.6em 1fr/ 30% 70%;
+    // 학습일수, 외운단어, 외워야할 단어 이력 개발 완료되면 다시 보이게하기
+    // grid-template: 3.6em 1fr/ 30% 70%;
+    grid-template: 3.6em 1fr/ 100%;
 
     .main__header {
       grid-column: 1 / 3;
