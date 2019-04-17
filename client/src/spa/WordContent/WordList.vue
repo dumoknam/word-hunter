@@ -247,6 +247,7 @@ export default {
         if (this.mean === '') {
           // Word mean input 박스 값이 빈 값이면 delete
           this.setDeleteWordMean(this.focusedMeanId);
+          return;
         }
 
         if (this.originalMean !== this.mean) {

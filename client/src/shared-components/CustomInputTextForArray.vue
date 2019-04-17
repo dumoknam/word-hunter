@@ -46,6 +46,13 @@ export default {
     return {
       focusedItem: '',
       inputValueArray: [],
+      dataState: '',
+      dataStateCallback: {
+        increase: () => {
+          // input이 추가되면 추가된 input에 focusing
+          this.$refs.input[this.inputValueArray.length - 1].focus();
+        },
+      },
     };
   },
   methods: {
@@ -85,6 +92,18 @@ export default {
       this.createArrayClone(now);
     });
     this.createArrayClone(this.array);
+  },
+  beforeUpdate() {
+    if (this.inputValueArray.length > this.$refs.input.length) {
+      this.dataState = 'increase';
+    } else {
+      this.dataState = '';
+    }
+  },
+  updated() {
+    if (this.dataState) {
+      this.dataStateCallback[this.dataState]();
+    }
   },
 };
 </script>
