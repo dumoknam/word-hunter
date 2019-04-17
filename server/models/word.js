@@ -28,8 +28,8 @@ wordSchema.statics = {
     const wordrow = new this(word);
     return wordrow.save();
   },
-  findOneById: function(_id) {
-    return this.findOne({ _id });
+  findOneById: function(_id, callback) {
+    return this.findOne({ _id }, callback);
   },
   findByMeanId: function(_id) {
     return this.find({ 

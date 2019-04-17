@@ -34,8 +34,11 @@ router.get('/word', authController.isLogin, wordController.getWordList);
 // 단어 조회 by word_name or mean
 router.get('/word/:keyword', authController.isLogin, wordController.getWord);
 
+// 단어 의미 추가
+router.post('/mean', authController.isLogin, wordMeanController.insertWordMean);
+
 // 단어 의미 수정
-router.put('/mean', authController.isLogin, wordMeanController.updaateWordMean);
+router.put('/mean', authController.isLogin, wordMeanController.updateWordMean);
 
 // 단어 의미 삭제
 router.delete('/mean/:mean_id', authController.isLogin, wordMeanController.deleteWordMean);

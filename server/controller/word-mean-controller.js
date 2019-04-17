@@ -5,10 +5,40 @@ const Word = require('../models/word');
 const util = require('../util');
 
 /**
+ * 단어 의미 추가
+ */
+exports.insertWordMean = (req, res, next) => {
+  const { wordId, mean } = req.body.params;
+  const wordMeanData = { mean };
+
+  const putMeanInToWord = (mean) => {
+    Word.findOneById(wordId, (error, wordData) => {
+      wordData.word_mean.push(mean._id);
+      wordData.save((error) => {
+        if (error) res.status(500).json({ error: 'Failed to update' });
+        res.status(200).json(util.success('Mean added', { meanData: mean }));
+      });
+    });
+  };
+
+  const onError = (error) => {
+    console.error(error);
+    if (error.name === util.errorName) {
+      res.status(200).json(JSON.parse(error.message));
+    } else {
+      res.status(500).json(error);
+    }
+  };
+
+  WordMean.create(wordMeanData)
+  .then(putMeanInToWord)
+  .catch(onError);
+};
+
+/**
  * 단어 의미 업데이트
  */
-exports.updaateWordMean = (req, res, next) => {
-  console.log("000");
+exports.updateWordMean = (req, res, next) => {
   const { meanId, mean } = req.body.params;
   const onResponse = (result) => {
     if (result.ok === 1) {

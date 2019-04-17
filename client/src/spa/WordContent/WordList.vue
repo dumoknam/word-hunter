@@ -22,6 +22,7 @@
             :focusoutcallback="wordFocusOut"></custom-input-text>
             <custom-input-text-for-array label="Meaning of word" :array="item.word_mean" v-model="mean"
             :filtercallback="onlyAlphaHangulNum" :focusincallback="meanFocusIn" :focusoutcallback="meanFocusOut"></custom-input-text-for-array>
+            <span class="item__addMean" @click="addMean">+</span>
             <div class="item_messageWrap" v-show="hasNotWordMeanItem">
               <p class="item_notFoundMean">Not found mean</p>
             </div>
@@ -81,6 +82,7 @@ export default {
       'readWord',
       'updateWord',
       'deleteWord',
+      'insertWordMean',
       'updateWordMean',
       'deleteWordMean',
     ]),
@@ -116,8 +118,8 @@ export default {
     // 단어 전체 조회
     async getFullWordList() {
       try {
-        const data = await this.readWordList();
-        this.setWordList(data.wordList, data.memorizedList);
+        const wordData = await this.readWordList();
+        this.setWordList(wordData.wordList, wordData.memorizedList);
       } catch (error) {
         throw new Error(error);
       }
@@ -125,8 +127,8 @@ export default {
     // 키워드(단어명)을 통한 조회
     async searchWord(keyword) {
       try {
-        const data = await this.readWord(keyword);
-        this.setWordList(data.wordList, data.memorizedList);
+        const wordData = await this.readWord(keyword);
+        this.setWordList(wordData.wordList, wordData.memorizedList);
       } catch (error) {
         throw new Error(error);
       }
@@ -145,14 +147,30 @@ export default {
     },
     // 단어 삭제
     async setDeleteWord(wordId, isMemorized) {
+      // 후에 단어 트레이닝시 암기된 단어와 그렇지 않은 단어를 구분지어
+      // 컨텐츠를 제공하기 위해서 isMemorized를 추가하였다
+      const deleteData = { wordId, isMemorized };
       try {
-        // 후에 단어 트레이닝시 암기된 단어와 그렇지 않은 단어를 구분지어
-        // 컨텐츠를 제공하기 위해서 isMemorized를 추가하였다
-        const deleteData = { wordId, isMemorized };
         const isSuccess = await this.deleteWord(deleteData);
         if (isSuccess) {
           this.wordList.splice(this.selectedWordIndex, 1);
           this.initSelectedItem();
+        }
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    // 단어 뜻 추가
+    async setInsertWordMean(wordId, mean) {
+      const insertData = { wordId, mean };
+      try {
+        const meanData = await this.insertWordMean(insertData);
+        if (meanData.success) {
+          // 새로 생성된 mean 데이터에 _id와 mean을 부여한다
+          const currentWord = this.wordList[this.selectedWordIndex];
+          const curentWordMean = currentWord.word_mean[this.focusedMeanIndex];
+          curentWordMean._id = meanData.data.meanData._id;
+          curentWordMean.mean = meanData.data.meanData.mean;
         }
       } catch (error) {
         throw new Error(error);
@@ -217,27 +235,45 @@ export default {
       }
     },
     meanFocusIn(index) {
-      // original 단어 뜻저장, 가이드 수정중으로 변경
+      // original 단어 뜻저장
       this.focusedMeanIndex = index;
       this.focusedMeanId = this.wordList[this.selectedWordIndex].word_mean[index]._id;
       this.originalMean = this.wordList[this.selectedWordIndex].word_mean[index].mean;
     },
     meanFocusOut() {
-      // Word mean input 박스 값이 빈 값이면 delete
-      if (this.mean === '') {
-        this.setDeleteWordMean(this.focusedMeanId);
-      }
+      if (this.focusedMeanId && this.originalMean) {
+        // 기존에 존재하던 단어의 뜻
 
-      // Word mean input 박스에서 focus out시 값이 변경되었다면 update
-      if (this.originalMean !== this.mean) {
-        this.setUpdateWordMean(this.focusedMeanId, this.mean);
+        if (this.mean === '') {
+          // Word mean input 박스 값이 빈 값이면 delete
+          this.setDeleteWordMean(this.focusedMeanId);
+        }
+
+        if (this.originalMean !== this.mean) {
+          // Word mean input 박스에서 focus out시 값이 변경되었다면 update
+          this.setUpdateWordMean(this.focusedMeanId, this.mean);
+        }
+      } else {
+        // 새로 추가된 단어의 뜻
+
+        if (this.mean === '') {
+          // 포커스 아웃 되었는데 아무것도 입력이 되지 않았다면 inputbox 제거
+          this.wordList[this.selectedWordIndex].word_mean.splice(this.focusedMeanIndex, 1);
+          return;
+        }
+
+        // 새로 추가된 단어의 뜻 인설트
+        const wordId = this.wordList[this.selectedWordIndex]._id;
+        this.setInsertWordMean(wordId, this.mean);
       }
     },
-    // 단어뜻 추가 버튼 개발 '+'로 추가하게끔
-    // '+' 누르면 this.wordList에 word_mean 배열에 항목이 추가됨.
-    // CustomInputTextForArray에서는 array를 deep:true로 watch해서 추가된 항목을
-    // inputValueArray에 push해줌. (_id값은 공란으로 둠)
-    // focusout될때 _id값이 공란인것은 insert시킴
+    addMean() {
+      this.wordList[this.selectedWordIndex].word_mean.push({
+        mean: '',
+        __v: this.wordList[this.selectedWordIndex].word_mean.length,
+        _id: '',
+      });
+    },
   },
   created() {
     this.getFullWordList();
@@ -329,6 +365,15 @@ $item-margin: 0.4em;
       .item__detail {
         border-top: 2px solid $masterContrastColor;
         padding-top: 1em;
+        text-align: center;
+
+        .item__addMean {
+          display: inline-block;
+          font-size: 3em;
+          font-weight: $fontExtraBold;
+          margin-bottom: 0.1em;
+          cursor: pointer;
+        }
 
         .item_messageWrap {
           position: relative;

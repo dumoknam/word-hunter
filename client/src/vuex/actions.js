@@ -123,6 +123,15 @@ export default {
       throw new Error(error);
     }
   },
+  // 단어 뜻 추가
+  async insertWordMean(store, insertWordMeanData) {
+    try {
+      const response = await wordMeanAPI.insertWordMean(store, insertWordMeanData);
+      return response.data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
   // 단어 의미 수정
   async updateWordMean(store, updateWordMeanData) {
     try {
