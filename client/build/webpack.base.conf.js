@@ -1,9 +1,11 @@
 'use strict'
+
 const path = require('path');
 const utils = require('./utils');
 const config = require('../config');
 const vueLoaderConfig = require('./vue-loader.conf');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const EslintFriendlyFormatter = require('eslint-friendly-formatter');
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir);
@@ -15,7 +17,7 @@ const createLintingRule = () => ({
   enforce: 'pre',
   include: [resolve('src'), resolve('test')],
   options: {
-    formatter: require('eslint-friendly-formatter'),
+    formatter: EslintFriendlyFormatter,
     emitWarning: !config.dev.showEslintErrorsInOverlay,
   },
 });
@@ -37,7 +39,7 @@ module.exports = {
     alias: {
       vue$: 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-    }
+    },
   },
   module: {
     rules: [
@@ -80,8 +82,8 @@ module.exports = {
         test: /.s[a|c]ss/,
         loader: ExtractTextPlugin.extract({
           use: 'css-loader!postcss-loader!sass-loader',
-          fallback: 'style-loader'
-        })
+          fallback: 'style-loader',
+        }),
         // loader: 'style!css!sass',
       },
     ],
