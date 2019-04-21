@@ -60,7 +60,7 @@ userSchema.statics = {
   findOneForLogin: function(name, password) {
     return this.findOne({ name, password });
   },
-  findOneByName: function(name, callback) {
+  findOneByName: function(name) {
     return this.findOne({ name });
   },
   findOneByNameCallback: function(name, callback) {

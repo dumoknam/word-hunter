@@ -63,13 +63,6 @@ const Question = (function() {
     type0() {
       const setQuestion = (user) => {
 
-        // Learning days 체크
-        const today = new Date().format('yyyyMMdd');
-        if (user.learning_days.indexOf(today) < 0) {
-          user.learning_days.push(today);
-          user.save();
-        }
-
         if (user.words.length < 1) {
           throw util.LogicalError('There is no word to memorize');
         }
@@ -97,7 +90,8 @@ const Question = (function() {
         const wordsClone = words;
 
         // 오답 설정
-        for (let i = 0; i < 3; i++) {
+        const wrongExampleLength = wordsClone.length < 3 ? wordsClone.length : 3;
+        for (let i = 0; i < wrongExampleLength; i++) {
           const wordIdx = Math.floor(Math.random() * wordsClone.length);
           const meanIdx = Math.floor(Math.random() * wordsClone[wordIdx].word_mean.length);
 
@@ -209,13 +203,24 @@ const Question = (function() {
 exports.getExamQuestion = (req, res, next) => {
   const { type } = req.params;
   const q = new Question(req, res);
+
+  // Learning days 체크
+  User.findOneByNameCallback(req.jwtobj.name, (error, user) => {
+    const today = new Date().format('yyyyMMdd');
+    if (user.learning_days.indexOf(today) < 0) {
+      user.learning_days.push(today);
+      user.save((error) => {
+        if (error) res.status(500).json({ error: 'Failed to update' });
+      });
+    }
+  });
   
   switch (type) {
     case '0':
       q.type0();
       break;
     case '1':
-      q.type0();
+      q.type1();
       break;
     default:
     res.status(500).json(util.fail('The type does not exist'));
