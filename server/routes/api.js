@@ -16,6 +16,9 @@ router.get('/idcheck/:name', userController.checkDuplicateId);
 // 로그인
 router.post('/login', userController.login);
 
+// Study history 조회
+router.get('/history', authController.isLogin, userController.getStudyHistory);
+
 // 단어 등록
 router.post('/word', authController.isLogin, wordController.registeredWord);
 

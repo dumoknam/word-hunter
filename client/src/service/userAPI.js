@@ -11,6 +11,10 @@ const readUserAPI = (loginData) => {
   });
 };
 
+const readStudyHistoryAPI = (token) => {
+  return jwtAxios(token).get('/api/history');
+};
+
 export default {
   async login(loginData) {
     try {
@@ -21,4 +25,13 @@ export default {
       throw new Error(error);
     }
   },
+  async readStudyHistory(store) {
+    try {
+      const p = await readStudyHistoryAPI(store.getters.getAccessToken);
+      const response = await p;
+      return response;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 };

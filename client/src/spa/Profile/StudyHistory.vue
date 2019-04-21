@@ -2,17 +2,20 @@
   <div class="studyHistory" v-show="isShow">
     <dl class="studyHistory__details">
       <dt>Learning days</dt>
-      <dd>30</dd>
-      <dt>Memorized words</dt>
+      <dd>{{ learningDayCnt }}</dd>
+      <dt>Words</dt>
+      <dd>{{ wordCnt }}</dd>
+      <!-- <dt>Memorized words</dt>
       <dd>50</dd>
       <dt>Remaining words</dt>
-      <dd>80</dd>
+      <dd>80</dd> -->
     </dl>
     <button type="button" class="btn studyHistory__close" @click="hide">Close</button>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'StudyHistory',
   props: {
@@ -22,16 +25,37 @@ export default {
       default: false,
     },
   },
+  data() {
+    return {
+      learningDayCnt: 0,
+      wordCnt: 0,
+    };
+  },
   computed: {
     isShow() {
       return this.value;
     },
   },
   methods: {
+    ...mapActions([
+      'readStudyHistory',
+    ]),
     hide() {
       this.$emit('input', false);
     },
+    async getStudyHistory() {
+      try {
+        const q = await this.readStudyHistory();
+        this.learningDayCnt = q.data.learningDayCnt;
+        this.wordCnt = q.data.wordCnt;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
   },
+  created() {
+    this.getStudyHistory();
+  }
 };
 </script>
 

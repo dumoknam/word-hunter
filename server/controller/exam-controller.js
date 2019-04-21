@@ -1,8 +1,33 @@
 'use strict';
 
-const Word = require('../models/word');
 const User = require('../models/user');
 const util = require('../util');
+
+String.prototype.repeatStr = function(len) {
+  let s = '';
+  for (let i = 0; i < len; i++) {
+    s = s.concat(this);
+  }
+  return s;
+};
+
+String.prototype.fixedStr = function(len, base) {
+  return base.repeatStr(len - this.length) + this;
+};
+
+Date.prototype.format = function(f) {
+  if (!this.valueOf) return '';
+  const that = this;
+  
+  return f.replace(/(yyyy|MM|dd)/gi, ($) => {
+    switch ($) {
+      case 'yyyy': return that.getFullYear();
+      case 'MM': return (that.getMonth() + 1).toString().fixedStr(2, '0');
+      case 'dd': return that.getDate().toString().fixedStr(2, '0');
+      default: return $;
+    }
+  });
+};
 
 /**
  * 셔플
@@ -37,6 +62,14 @@ const Question = (function() {
     // 단어의 뜻 맞추기
     type0() {
       const setQuestion = (user) => {
+
+        // Learning days 체크
+        const today = new Date().format('yyyyMMdd');
+        if (user.learning_days.indexOf(today) < 0) {
+          user.learning_days.push(today);
+          user.save();
+        }
+
         if (user.words.length < 1) {
           throw util.LogicalError('There is no word to memorize');
         }
@@ -182,7 +215,7 @@ exports.getExamQuestion = (req, res, next) => {
       q.type0();
       break;
     case '1':
-      q.type1();
+      q.type0();
       break;
     default:
     res.status(500).json(util.fail('The type does not exist'));

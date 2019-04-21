@@ -43,7 +43,7 @@ const userSchema = new Schema({
     require: true,
     default: Date.now,
   },
-  learning_days: [{ type: Date }]
+  learning_days: [{ type: String }]
 });
 
 userSchema.statics = {

@@ -56,7 +56,6 @@ export default {
       'increaseWordScore',
     ]),
     trainingStart() {
-      this.start = true;
       this.readyQuestion();
     },
     // 트레이닝 문제 준비
@@ -70,10 +69,13 @@ export default {
       try {
         const q = await this.getExamQuestion(type);
         if (q.success) {
+          this.start = true;
           this.question = q.data.question;
           this.examples = q.data.examples;
-
           this.countDownStart();
+        } else {
+          this.start = false;
+          alert('Not found word');
         }
       } catch (error) {
         throw new Error(error);

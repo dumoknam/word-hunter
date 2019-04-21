@@ -17,7 +17,7 @@ exports.registeredWord = (req, res, next) => {
       meansId.push({ _id: mean._id });
       return meansId;
     }, []);
-    
+
     const wordData = {
       word_name: word,
       word_mean: meansId

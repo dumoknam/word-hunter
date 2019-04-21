@@ -119,3 +119,28 @@ exports.login = (req, res, next) => {
   .then(onResponse)
   .catch(onError);
 };
+
+exports.getStudyHistory = (req, res, next) => {
+  const jwtObj = req.jwtobj;
+
+  const onResonse = (user) => {
+    res.status(200).json(util.success('Read success', {
+      learningDayCnt: user.learning_days.length,
+      wordCnt: user.words.length,
+      memorizedCnt: user.memorized.length
+    }));
+  };
+
+  const onError = (error) => {
+    console.error(error);
+    if (error.name === util.errorName) {
+      res.status(200).json(JSON.parse(error.message));
+    } else {
+      res.status(500).json(error);
+    }
+  };
+
+  User.findOneByName(jwtObj.name)
+  .then(onResonse)
+  .catch(onError);
+};

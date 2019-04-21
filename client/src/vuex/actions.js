@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN, IS_AUTH, API_RESPONSE_MESSAGE } from './mutation_type';
-import loginAPI from '../service/loginAPI';
+import userAPI from '../service/userAPI';
 import signupAPI from '../service/signupAPI';
 import wordAPI from '../service/wordAPI';
 import wordMeanAPI from '../service/wordMeanAPI';
@@ -20,7 +20,7 @@ export default {
   // 로그인
   async login(store, loginData) {
     try {
-      const response = await loginAPI.login(loginData);
+      const response = await userAPI.login(loginData);
       let isSuccess = false;
       setApiResponseMessage(store, response.message);
       if (response.success) {
@@ -40,6 +40,14 @@ export default {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('isAuth');
     return true;
+  },
+  async readStudyHistory(store) {
+    try {
+      const response = await userAPI.readStudyHistory(store);
+      return response.data;
+    } catch (error) {
+      throw new Error(error);
+    }
   },
   // 회원가입
   async signup(store, signupData) {
